@@ -18,4 +18,3 @@ export default function useLocalStorage(key, defaultValue) {
 
     return  [value, setValue]
 }
-console.log("hi")

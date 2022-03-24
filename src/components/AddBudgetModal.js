@@ -16,7 +16,7 @@ export default function AddBudgetModal({ show, handleClose, name, max }) {
         handleClose()
     }
     return (
-    <Modal show={show} onClose={handleClose}>
+    <Modal show={show} onHide={handleClose}>
         <Form onSubmit={handleSubmit}>
             <Modal.Header closeButton>
                 <Modal.Title>New Budget</Modal.Title>
