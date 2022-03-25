@@ -44,6 +44,7 @@ export const BudgetsProvider = ({ children })=>{
       };
   
       function addBudget({ name, max }) {
+        
         setBudgets(prevBudgets=> {
           if (prevBudgets.find(budget=> budget.name === name)) {
             return prevBudgets
@@ -59,6 +60,14 @@ export const BudgetsProvider = ({ children })=>{
       }
   
       function deleteBudget({ id }) {
+        setExpenses(prevExpenses =>{
+          return prevExpenses.map(expense=> {
+            if(expense.budgetId !== id) return expense
+            
+            return{ ...expense, budgetId: UNCATEGORIZED_BUDGETID }
+          })
+        })
+
         setBudgets(prevBudgets=>{ 
           return prevBudgets.filter(budget => budget.id !== id)
           })
