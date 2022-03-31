@@ -11,7 +11,9 @@ import ViewExpensesModal from "./components/ViewExpensesModal";
 
 function App() {
 
+  /* Handles the state of "Show" prop in AddBudgetModal.js*/
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
+  /* Handles the state of "Show" prop in AddExpenseModal.js*/
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
   const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState()
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
