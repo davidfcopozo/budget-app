@@ -37,13 +37,22 @@ childen as parameter, all data insed it, passes to childen so we can use it as v
 <BudgetsContext.Provider />*/
 export const BudgetsProvider = ({ children })=>{
   
+  /* Make states for budgets, expenses and theme and set them to local storage, the first parameter being
+    the key and the second one the value*/
+
   const [budgets, setBudgets]= useLocalStorage("budgets", []),
-    [expenses, setExpenses] = useLocalStorage("expenses",[]);
+    [expenses, setExpenses] = useLocalStorage("expenses",[])
       
+      /* Function that gets the expenses of a budget making sure that the expenses share the ID of the
+      budget in question */
       function getBudgetExpenses(budgetId) {
         return expenses.filter(expense=> expense.budgetId === budgetId); 
-      };
+      }
   
+      /* Function to add an expense and checks if there is any previous expense to add it to them.
+      1- Checks if the expense had already been added to return the same previous expenses.
+      2- If it is a new expense then it will add it to the previous expenses list asigning a new ID,
+      and the budgetId it corresponds to. */
       function addExpense({ description, amount, budgetId }) {
         setExpenses(prevExpenses=> {
           if (prevExpenses.find(expense=> expense.name === budgetId)) {
@@ -52,7 +61,12 @@ export const BudgetsProvider = ({ children })=>{
           return [...prevExpenses, {id: uuidV4(), description, amount, budgetId }]
         })
       };
-  
+      
+      /* Function to add a Budget 
+      1- Checks if the Budget had already been added to return the same previous Budgets.
+
+      2- If it is a new Budget then it will add it to the previous Budgets list asigning a new ID, name
+      and the budget max value. */
       function addBudget({ name, max }) {
         
         setBudgets(prevBudgets=> {
@@ -63,12 +77,24 @@ export const BudgetsProvider = ({ children })=>{
         })
       };
   
+      /* Function to delete an expense
+      1- It will re-set all of the previous expenses as long as they do not have the expense's ID in question
+      using filter so that it will re-set all of the expenses but the one being deleted. */
       function deleteExpense({ id }) {
         setExpenses(prevExpenses=>{ 
           return prevExpenses.filter(expense => expense.id !== id)
         })
       }
   
+      /* Function to delete a Budget
+      1- It will re-set all of the expenses by checking if they do not share the same ID with the budget
+      being deleted and if they do share the same ID then it will add those expenses from the budget
+      being deleted and add them to the Uncategorized budget.
+
+      2- It will re-set all of the previous Budgets as long as they do not have the Budget's ID in question
+      using filter so that it will re-set all of the Budgets but the one being deleted. 
+      
+      3- And will re-set all of the previous Budgets but the one being deleted.*/
       function deleteBudget({ id }) {
         setExpenses(prevExpenses =>{
           return prevExpenses.map(expense=> {

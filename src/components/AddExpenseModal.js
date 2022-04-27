@@ -1,11 +1,15 @@
 import { Button, Form, Modal } from "react-bootstrap"
 import { useRef } from "react"
 import { UNCATEGORIZED_BUDGETID, useBudgets } from "../contexts/BudgetsContext"
+import { useDynamicLang } from "../contexts/LanguageContext"
+import { content } from "../components/Languages"
 
 export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) {
     const descriptionRef = useRef(),
     amountRef = useRef(),
     budgetIdRef = useRef()
+
+    const lang = useDynamicLang()
 
     const { addExpense, budgets } = useBudgets()
     
@@ -20,24 +24,24 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
     }
 
     return (
-    <Modal show={show} onHide={handleClose}>
-        <Form onSubmit={handleSubmit}>
+    <Modal show={show} onHide={handleClose} >
+        <Form onSubmit={handleSubmit} >
             <Modal.Header closeButton>
-                <Modal.Title>New Expense</Modal.Title>
+                <Modal.Title>{content[lang]["titles"]["newExpense"]}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form.Group className="mb-3" controlId="description" >
-                    <Form.Label>Description</Form.Label>
+                    <Form.Label>{content[lang]["addExpenseForm"]["description"]}</Form.Label>
                     <Form.Control ref={descriptionRef} type="text" required/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="amount" >
-                    <Form.Label>Amount</Form.Label>
+                    <Form.Label>{content[lang]["addExpenseForm"]["amount"]}</Form.Label>
                     <Form.Control ref={amountRef} type="number" min={0} step={0.01} required/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="budgetId" >
-                    <Form.Label>Budget</Form.Label>
+                    <Form.Label>{content[lang]["addExpenseForm"]["budget"]}</Form.Label>
                     <Form.Select ref={budgetIdRef} defaultValue={defaultBudgetId} >
-                        <option id={UNCATEGORIZED_BUDGETID}>Uncategorized</option>
+                        <option id={UNCATEGORIZED_BUDGETID}>{content[lang]["titles"]["uncategorized"]}</option>
                         {budgets.map(budget =>(
                             <option key={budget.id} value={budget.id} >{budget.name}</option>
                         ))}

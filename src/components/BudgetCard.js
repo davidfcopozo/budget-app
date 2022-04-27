@@ -1,10 +1,16 @@
 import { Button, Card, ProgressBar, Stack } from 'react-bootstrap'
 import React from 'react'
 import { currencyFormatter } from '../utils'
+import { useTheme } from '../contexts/ThemesContext';
+import { content } from "./Languages"
+import { useDynamicLang } from "../contexts/LanguageContext"
 
 
 
 export default function BudgetCard({ name, amount, max, gray, onAddExpenseClick, hideButtons, onViewExpenseClick }) {
+  /* const {themes} = useTheme() */
+  const lang = useDynamicLang()
+
 
   const classNames = [];
   if(amount > max) {
@@ -15,7 +21,7 @@ export default function BudgetCard({ name, amount, max, gray, onAddExpenseClick,
 
   return (
     <Card className={classNames.join(" ")} >
-      <Card.Body>
+      <Card.Body >
         <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
           <div className="me-2">{name}</div>
             <div className="d-flex align-items-baseline">
@@ -33,8 +39,8 @@ export default function BudgetCard({ name, amount, max, gray, onAddExpenseClick,
         min={0} 
         max={1000}/>}
         {!hideButtons && <Stack direction='horizontal' gap="2" className="mt-4" >
-          <Button variant="outline-primary" className="ms-auto" onClick={onAddExpenseClick} >Add Expense</Button>
-          <Button variant="outline-secondary" onClick={onViewExpenseClick} >View Expenses</Button> 
+          <Button variant="outline-primary" className="ms-auto" onClick={onAddExpenseClick} >{content[lang]["buttons"]["addExpense"]}</Button>
+          <Button variant="outline-secondary" onClick={onViewExpenseClick} >{content[lang]["titles"]["viewExpensesTitle"]}</Button> 
         </Stack>}
       </Card.Body>
     </Card>

@@ -1,8 +1,12 @@
 import { Button, Modal, Stack } from "react-bootstrap"
 import { UNCATEGORIZED_BUDGETID, useBudgets } from "../contexts/BudgetsContext"
+import { useDynamicLang } from "../contexts/LanguageContext"
 import { currencyFormatter } from "../utils"
+import { content } from "./Languages"
 
 export default function ViewExpensesModal({ budgetId, handleClose}) {
+
+    const lang = useDynamicLang()
    
     const { getBudgetExpenses, budgets, deleteBudget, deleteExpense } = useBudgets()
     
@@ -15,13 +19,13 @@ export default function ViewExpensesModal({ budgetId, handleClose}) {
                 <Modal.Title>
                     <Stack direction="horizontal" gap="2" >
                         {/* If we have a budget defined budget, show it, otherwise ignore it */}
-                    <div>Expenses - {budgets?.name}</div>
+                    <div>{content[lang]["titles"]["viewExpensesTitle"]} - {budgets?.name}</div>
                     {/* avoid deleting the uncategorized button by the condition set out below */}
                     {budgetId !== UNCATEGORIZED_BUDGETID && (
                         <Button variant="outline-danger" onClick={()=> {
                             deleteBudget(budget)
                             handleClose()
-                        }} >Delete</Button>
+                        }} >{content[lang]["buttons"]["deleteButton"]}</Button>
                     )}
                     </Stack>
                 </Modal.Title>
