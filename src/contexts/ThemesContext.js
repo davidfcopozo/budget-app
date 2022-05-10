@@ -19,8 +19,10 @@ export function useThemeUpdater() {
 export function ThemesProvider ({ children }){ 
 
   const browserTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)') ? true : false
+  
   const [darkTheme, setDarkTheme]= useState(browserTheme)
-  const [darkButton, setDarkButton]= useState()
+  
+  const [darkButton, setDarkButton]= useState(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)') ? "Light" : "Dark")
 
 
   //window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -28,8 +30,7 @@ export function ThemesProvider ({ children }){
   function themeToggler() {
     setDarkTheme(prevDarkTheme => !prevDarkTheme)
 
-    setDarkButton(darkTheme ? "Dark" : "Light")
-    console.log()
+    setDarkButton(darkTheme ? "🌙" : "☀️")
   }
 
   return (

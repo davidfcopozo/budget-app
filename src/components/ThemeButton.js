@@ -5,13 +5,13 @@ import { useTheme, useThemeUpdater } from "../contexts/ThemesContext"
 
 export default function ThemeButton(){
   
-
-  
   const { themeToggler, darkButton } = useThemeUpdater()
+  const darkTheme = useTheme()
+  const darkButtonVariant = darkTheme ? "primary" : "dark"
 
   return (
     <>
-    <Button size="sm" onClick={themeToggler}>{darkButton}</Button>
+    <Button size="sm" variant={darkButtonVariant} onClick={themeToggler}>{darkButton}</Button>
     </>
   )
 }

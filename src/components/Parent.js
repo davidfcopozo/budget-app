@@ -19,8 +19,6 @@ import { content } from "../components/Languages";
 
 function Parent() {
 
- 
-
   /* Handles the state of "Show" prop in AddBudgetModal.js*/
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
   /* Handles the state of "Show" prop in AddExpenseModal.js*/
@@ -38,9 +36,11 @@ function Parent() {
   const darkTheme = useTheme()
   const containerDark = useTheme()
   
-  /* const lang = useDynamicLang() */
-  
 let darker = containerDark ? "bg-dark" : "bg-light"
+let titleStyle = {
+  color: containerDark ? "white" : "#000",
+
+}
  
   function openAddExpenseModal(budgetId) {
     setShowAddExpenseModal(true)
@@ -50,13 +50,12 @@ let darker = containerDark ? "bg-dark" : "bg-light"
     console.log(containerDark)
   }
 
-
-
   
   return <> 
   {/* React Bootstrap container to wrap the app up */}  
   
-    <Container className={darker}>
+    <Container style={{minWidth: "100%"}} className={darker}>
+      <Container tyle={{minHeight: "90%"}} className={darker}>
         <Navbar size="sm" className={"justify-content-end"} >
             <Stack direction="horizontal" gap="2" className="mb-4" >
                 <ThemeButton />
@@ -66,12 +65,15 @@ let darker = containerDark ? "bg-dark" : "bg-light"
       
       {/* Stacks buttons horizontally with 2 rem gap or margin */}
       <Stack direction="horizontal" gap="2" className="mb-4" >
-        <h1 className="me-auto title">{content[lang]["titles"]["budgets"]}</h1>
+        <h1 style={titleStyle} className="me-auto title">{content[lang]["titles"]["budgets"]}</h1>
         <Button variant="primary" onClick={()=>setShowAddBudgetModal(true)} className="add-budget-btn" >{content[lang]["buttons"]["addBudget"]}</Button>
         <Button variant="outline-primary" onClick={openAddExpenseModal} className="add-expense-btn">{content[lang]["buttons"]["addExpense"]}</Button>
       </Stack>
-      <div style={{display: "grid", gridTemplateColums: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1rem", alignItems: "flex-start"}}
-      >
+      <div style={{display: "grid",
+      gridTemplateColums: "repeat(auto-fill, minmax(300px, 1fr))",
+      gap: "1rem",
+      alignItems: "flex-start",
+    }}>
 
         {budgets.map(budget=> {
           const amount = getBudgetExpenses(budget.id).reduce((total, expense) => total + expense.amount, 0)
@@ -92,8 +94,9 @@ let darker = containerDark ? "bg-dark" : "bg-light"
         onViewExpenseClick={()=>setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGETID)}
         />
 
-        <TotalBudgetCard />
+        <TotalBudgetCard style={{marginBottom: "10rem"}}/>
       </div>
+      </Container>
     </Container>
     
     <AddBudgetModal 
@@ -111,6 +114,7 @@ let darker = containerDark ? "bg-dark" : "bg-light"
     budgetId={viewExpensesModalBudgetId}
     handleClose={()=>setViewExpensesModalBudgetId()} 
     />
+  
   </>
   
 }

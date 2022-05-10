@@ -8,7 +8,10 @@ import { useDynamicLang } from "../contexts/LanguageContext"
 
 
 export default function BudgetCard({ name, amount, max, gray, onAddExpenseClick, hideButtons, onViewExpenseClick }) {
-  /* const {themes} = useTheme() */
+  
+const containerDark = useTheme()
+  
+let darker = containerDark ? "bg-dark" : "bg-light"
   const lang = useDynamicLang()
 
 
