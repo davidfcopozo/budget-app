@@ -20,12 +20,10 @@ export function ThemesProvider ({ children }){
 
   const browserTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)') ? true : false
   
-  const [darkTheme, setDarkTheme]= useState(browserTheme)
+  const [darkTheme, setDarkTheme] = useState(browserTheme)
   
-  const [darkButton, setDarkButton]= useState(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)') ? "Light" : "Dark")
+  const [darkButton, setDarkButton] = useState(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)') ? "☀️" : "🌙")
 
-
-  //window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
 
   function themeToggler() {
     setDarkTheme(prevDarkTheme => !prevDarkTheme)

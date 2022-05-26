@@ -9,8 +9,7 @@ import TotalBudgetCard from "../components/TotalBudgetCard";
 import { UNCATEGORIZED_BUDGETID, useBudgets } from "../contexts/BudgetsContext";
 import ViewExpensesModal from "../components/ViewExpensesModal";
 import ThemeButton  from "../components/ThemeButton";
-import  { ThemesProvider, useTheme } from "../contexts/ThemesContext";
-import useLocalStorage from "../hooks/useLocalStorage";
+import  { useTheme } from "../contexts/ThemesContext";
 import  {LanguageSelect}  from "../components/LanguageSelect";
 import { useDynamicLang } from "../contexts/LanguageContext";
 import { content } from "../components/Languages";
@@ -27,19 +26,15 @@ function Parent() {
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
   const { budgets, getBudgetExpenses } = useBudgets()
 
-  /* const browserLanguage = window.navigator.language 
-  const dynamicLang = browserLanguage === "en" ? "english" : "spanish"
-  const [ lang, setLang ]=useState(dynamicLang) */
-
   const lang = useDynamicLang()
 
-  const darkTheme = useTheme()
   const containerDark = useTheme()
   
 let darker = containerDark ? "bg-dark" : "bg-light"
+
 let titleStyle = {
   color: containerDark ? "white" : "#000",
-
+  transition: "all 0.8s ease-in"
 }
  
   function openAddExpenseModal(budgetId) {
@@ -53,12 +48,11 @@ let titleStyle = {
   
   return <> 
   {/* React Bootstrap container to wrap the app up */}  
-  
     <Container style={{minWidth: "100%"}} className={darker}>
       <Container tyle={{minHeight: "90%"}} className={darker}>
         <Navbar size="sm" className={"justify-content-end"} >
             <Stack direction="horizontal" gap="2" className="mb-4" >
-                <ThemeButton />
+                <ThemeButton  />
                 <LanguageSelect />
             </Stack>
         </Navbar>

@@ -11,7 +11,6 @@ export default function BudgetCard({ name, amount, max, gray, onAddExpenseClick,
   
 const containerDark = useTheme()
   
-let darker = containerDark ? "bg-dark" : "bg-light"
   const lang = useDynamicLang()
 
 

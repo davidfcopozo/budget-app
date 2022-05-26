@@ -10,8 +10,6 @@ export const LanguageSelect = () => {
 const darkTheme = useTheme()
   const darkButtonVariant = darkTheme ? "primary" : "dark"
 
-
-
   return (
       <Button variant={darkButtonVariant}  size="sm" onClick={()=>handleSetLanguage()} >
           {language}
