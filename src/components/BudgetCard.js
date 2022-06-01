@@ -1,15 +1,13 @@
 import { Button, Card, ProgressBar, Stack } from 'react-bootstrap'
 import React from 'react'
 import { currencyFormatter } from '../utils'
-import { useTheme } from '../contexts/ThemesContext';
 import { content } from "./Languages"
 import { useDynamicLang } from "../contexts/LanguageContext"
 
 
 
 export default function BudgetCard({ name, amount, max, gray, onAddExpenseClick, hideButtons, onViewExpenseClick }) {
-  
-const containerDark = useTheme()
+
   
   const lang = useDynamicLang()
 
