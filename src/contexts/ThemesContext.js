@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import useLocalStorage from '../hooks/useLocalStorage'
 
 
@@ -20,9 +20,9 @@ export function ThemesProvider ({ children }){
 
   const browserTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)') ? true : false
   
-  const [darkTheme, setDarkTheme] = useState(browserTheme)
+  const [darkTheme, setDarkTheme] = useLocalStorage("darkTheme", browserTheme)
   
-  const [darkButton, setDarkButton] = useState(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)') ? "☀️" : "🌙")
+  const [darkButton, setDarkButton] = useLocalStorage("darkButton",window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)') ? "☀️" : "🌙")
 
 
   function themeToggler() {

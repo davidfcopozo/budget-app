@@ -15,22 +15,6 @@ export function useBudgets() {
   return useContext(BudgetsContext)
 }
 
-/* budget
-
-{
-  id:
-  name:
-  max:
-}
-
-expense
-{
-  id:
-  budgetId:
-  amount:
-  description:
-}
- */
 
 /* This function provides all the data we want to pass to <BudgetsContext.Provider /> as prop using 
 childen as parameter, all data insed it, passes to childen so we can use it as value in 

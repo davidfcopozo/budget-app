@@ -29,10 +29,10 @@ export function LanguageProvider ({ children }){
 
     const browserLanguage = window.navigator.language 
     const defaultLang = browserLanguage === "en" ? "ES" : "EN"
-    const [language, setLanguage ]=useState(defaultLang)
+    const [language, setLanguage ]=useLocalStorage("language", defaultLang)
 
     const dynamicLang = browserLanguage === "en" ? "english" : "spanish"
-    const [lang, setLang ]=useState(dynamicLang)
+    const [lang, setLang ]=useLocalStorage("lang", dynamicLang)
     
     function handleSetLanguage() {
         setLanguage(prevLanguage => {

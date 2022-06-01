@@ -48,8 +48,8 @@ let titleStyle = {
   
   return <> 
   {/* React Bootstrap container to wrap the app up */}  
-    <Container style={{minWidth: "100%"}} className={darker}>
-      <Container tyle={{minHeight: "90%"}} className={darker}>
+    <Container style={{minWidth: "100%", height: "100vh"}} className={darker}>
+      <Container tyle={{minWidth: "90%"}} className={darker}>
         <Navbar size="sm" className={"justify-content-end"} >
             <Stack direction="horizontal" gap="2" className="mb-4" >
                 <ThemeButton  />
@@ -57,17 +57,17 @@ let titleStyle = {
             </Stack>
         </Navbar>
       
-      {/* Stacks buttons horizontally with 2 rem gap or margin */}
+        {/* Stacks buttons horizontally with 2 rem gap or margin */}
       <Stack direction="horizontal" gap="2" className="mb-4" >
         <h1 style={titleStyle} className="me-auto title">{content[lang]["titles"]["budgets"]}</h1>
         <Button variant="primary" onClick={()=>setShowAddBudgetModal(true)} className="add-budget-btn" >{content[lang]["buttons"]["addBudget"]}</Button>
         <Button variant="outline-primary" onClick={openAddExpenseModal} className="add-expense-btn">{content[lang]["buttons"]["addExpense"]}</Button>
       </Stack>
       <div style={{display: "grid",
-      gridTemplateColums: "repeat(auto-fill, minmax(300px, 1fr))",
-      gap: "1rem",
-      alignItems: "flex-start",
-    }}>
+        gridTemplateColums: "repeat(auto-fill, minmax(300px, 1fr))",
+        gap: "1rem",
+        alignItems: "flex-start",
+        }}>
 
         {budgets.map(budget=> {
           const amount = getBudgetExpenses(budget.id).reduce((total, expense) => total + expense.amount, 0)
@@ -92,7 +92,6 @@ let titleStyle = {
       </div>
       </Container>
     </Container>
-    
     <AddBudgetModal 
     show={showAddBudgetModal} 
     handleClose={()=>setShowAddBudgetModal(false)} 
@@ -108,8 +107,9 @@ let titleStyle = {
     budgetId={viewExpensesModalBudgetId}
     handleClose={()=>setViewExpensesModalBudgetId()} 
     />
+    
   
-  </>
+</>
   
 }
 
