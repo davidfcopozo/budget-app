@@ -13,6 +13,7 @@ import  { useTheme } from "../contexts/ThemesContext";
 import  {LanguageSelect}  from "../components/LanguageSelect";
 import { useDynamicLang } from "../contexts/LanguageContext";
 import { content } from "../components/Languages";
+import logo from "../assets/logo.png"
 
 
 
@@ -30,7 +31,7 @@ function Parent() {
 
   const containerDark = useTheme()
   
-let darker = containerDark ? "bg-dark" : "bg-light"
+let darker = containerDark ? "bg-dark" : "bg-light";
 
 let titleStyle = {
   color: containerDark ? "white" : "#000",
@@ -49,9 +50,18 @@ let titleStyle = {
   return <> 
   {/* React Bootstrap container to wrap the app up */}  
     <Container style={{minWidth: "100%", height: "100vh"}} className={darker}>
-      <Container tyle={{minWidth: "90%"}} className={darker}>
-        <Navbar size="sm" className={"justify-content-end"} >
-            <Stack direction="horizontal" gap="2" className="mb-4" >
+      <Container tyle={{minWidth: "90%"}} className={`${darker} align-content-center`}>
+        <Navbar size="sm" className={"justify-content-md-between "} >
+          <Navbar.Brand>
+          <img
+            src={logo}
+            width="120"
+            height="120"
+            className={"justify-content-start"}
+            alt="Budget Buddy"
+          />
+    </Navbar.Brand>
+            <Stack direction="horizontal" gap="2" className="mb-4 align-items: end" >
                 <ThemeButton  />
                 <LanguageSelect />
             </Stack>
