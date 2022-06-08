@@ -48,7 +48,7 @@ let titleStyle = {
   {/* React Bootstrap container to wrap the app up */}  
     <Container style={{minWidth: "100%", height: "100vh"}} className={darker}>
       <Container tyle={{minWidth: "90%"}} className={`${darker} align-content-center`}>
-        <Navbar expand="lg" className={"justify-content-md-between "} >
+        <Navbar size="sm" className={"justify-content-md-between "} >
           <Navbar.Brand>
           <img
             src={logo}
