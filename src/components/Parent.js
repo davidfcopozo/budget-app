@@ -65,7 +65,7 @@ let titleStyle = {
         </Navbar>
       
         {/* Stacks buttons horizontally with 2 rem gap or margin */}
-      <Stack direction="horizontal" gap="2" className="mb-4" id="actionButtons" >
+      <Stack direction="horizontal" gap="2" className="mb-4">
         <h1 style={titleStyle} className="me-auto title">{content[lang]["titles"]["budgets"]}</h1>
         <Button variant="primary" onClick={()=>setShowAddBudgetModal(true)} className="add-budget-btn" >{content[lang]["buttons"]["addBudget"]}</Button>
         <Button variant="outline-primary" onClick={openAddExpenseModal} className="add-expense-btn">{content[lang]["buttons"]["addExpense"]}</Button>
