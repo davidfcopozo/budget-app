@@ -41,9 +41,6 @@ let titleStyle = {
   function openAddExpenseModal(budgetId) {
     setShowAddExpenseModal(true)
     setAddExpenseModalBudgetId(budgetId)
-    
-    console.log(darker)
-    console.log(containerDark)
   }
 
   
@@ -51,7 +48,7 @@ let titleStyle = {
   {/* React Bootstrap container to wrap the app up */}  
     <Container style={{minWidth: "100%", height: "100vh"}} className={darker}>
       <Container tyle={{minWidth: "90%"}} className={`${darker} align-content-center`}>
-        <Navbar size="sm" className={"justify-content-md-between "} >
+        <Navbar expand="lg" className={"justify-content-md-between "} >
           <Navbar.Brand>
           <img
             src={logo}
@@ -61,14 +58,14 @@ let titleStyle = {
             alt="Budget Buddy"
           />
     </Navbar.Brand>
-            <Stack direction="horizontal" gap="2" className="mb-4 align-items: end" >
+            <Stack direction="horizontal" gap="2" className="mb-4 align-items-md-end" >
                 <ThemeButton  />
                 <LanguageSelect />
             </Stack>
         </Navbar>
       
         {/* Stacks buttons horizontally with 2 rem gap or margin */}
-      <Stack direction="horizontal" gap="2" className="mb-4" >
+      <Stack direction="horizontal" gap="2" className="mb-4" id="actionButtons" >
         <h1 style={titleStyle} className="me-auto title">{content[lang]["titles"]["budgets"]}</h1>
         <Button variant="primary" onClick={()=>setShowAddBudgetModal(true)} className="add-budget-btn" >{content[lang]["buttons"]["addBudget"]}</Button>
         <Button variant="outline-primary" onClick={openAddExpenseModal} className="add-expense-btn">{content[lang]["buttons"]["addExpense"]}</Button>
