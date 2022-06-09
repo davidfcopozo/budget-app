@@ -26,13 +26,14 @@ function Parent() {
   const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState()
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
   const [screenSize, setScreenSize] = useState()
-  const [responsive, setResponsive] = useState()
+  const [responsive, setResponsive] = useState(window.matchMedia("(max-width: 767px)").matches ? "vertical" : "horizontal")
   const { budgets, getBudgetExpenses } = useBudgets()
+
 
   window.onresize = (event) => {
   setScreenSize(window.innerWidth)
   setResponsive(screenSize < 768 ? "vertical" : "horizontal")
-  console.log(responsive)
+  //console.log(responsive)
 };
 
   const lang = useDynamicLang()
