@@ -25,7 +25,15 @@ function Parent() {
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false)
   const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState()
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState()
+  const [screenSize, setScreenSize] = useState()
+  const [responsive, setResponsive] = useState()
   const { budgets, getBudgetExpenses } = useBudgets()
+
+  window.onresize = (event) => {
+  setScreenSize(window.innerWidth)
+  setResponsive(screenSize < 768 ? "vertical" : "horizontal")
+  console.log(responsive)
+};
 
   const lang = useDynamicLang()
 
@@ -37,12 +45,11 @@ let titleStyle = {
   color: containerDark ? "white" : "#000",
   transition: "all 0.8s ease-in"
 }
- 
+
   function openAddExpenseModal(budgetId) {
     setShowAddExpenseModal(true)
     setAddExpenseModalBudgetId(budgetId)
   }
-
   
   return <> 
   {/* React Bootstrap container to wrap the app up */}  
@@ -58,14 +65,14 @@ let titleStyle = {
             alt="Budget Buddy"
           />
     </Navbar.Brand>
-            <Stack direction="horizontal" gap="2" className="mb-4 align-items-md-end" >
+            <Stack direction="horizontal" gap="2" className="mb-4 align-items-md-center" >
                 <ThemeButton  />
                 <LanguageSelect />
             </Stack>
         </Navbar>
       
         {/* Stacks buttons horizontally with 2 rem gap or margin */}
-      <Stack direction="horizontal" gap="2" className="mb-4">
+      <Stack direction={responsive} gap="2" className="mb-4 d-flex flex-wrap">
         <h1 style={titleStyle} className="me-auto title">{content[lang]["titles"]["budgets"]}</h1>
         <Button variant="primary" onClick={()=>setShowAddBudgetModal(true)} className="add-budget-btn" >{content[lang]["buttons"]["addBudget"]}</Button>
         <Button variant="outline-primary" onClick={openAddExpenseModal} className="add-expense-btn">{content[lang]["buttons"]["addExpense"]}</Button>

@@ -16,12 +16,4 @@ code {
     monospace;
 }
 
-@media only screen and (max-width: 768px) {
-  .hstack {
-    flex-direction: column !important;
-  }
-  button {
-    width: 100%;
-  }
-}
 
