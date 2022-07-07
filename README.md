@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Live demo
 
-This project is hosted in Firebase, you can check it out [here](https://budget-buddy-d0db6.web.app/){:target="_blank"}
+This project is hosted in Firebase, you can check it out [here](https://budget-buddy-d0db6.web.app/){:target="\_blank"}
 
 ## Available Scripts
 
