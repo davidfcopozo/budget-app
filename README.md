@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Live demo
+
+This project is hosted in Firebase, you can check it out [here](https://budget-buddy-d0db6.web.app)
+
 ## Available Scripts
 
 In the project directory, you can run:
