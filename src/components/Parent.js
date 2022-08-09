@@ -54,7 +54,7 @@ function Parent() {
     <>
       {/* React Bootstrap container to wrap the app up */}
       <Container
-        style={{ minWidth: "100%", height: "auto" }}
+        style={{ minWidth: "100%", paddingBottom: "5rem" }}
         className={darker}
       >
         <Container
@@ -158,6 +158,8 @@ function Parent() {
         budgetId={viewExpensesModalBudgetId}
         handleClose={() => setViewExpensesModalBudgetId()}
       />
+
+      <Footprint />
     </>
   );
 }

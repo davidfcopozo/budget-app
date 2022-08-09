@@ -12,7 +12,7 @@ export default function TotalBudgetCard() {
   return (
     <>
       <BudgetCard amount={amount} name="Total" gray max={max} hideButtons />
-      <Footprint />
+      {/*  <Footprint /> */}
     </>
   );
 }

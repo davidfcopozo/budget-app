@@ -14,6 +14,10 @@ const Footprint = () => {
     textDecoration: "none",
     marginTop: "unset",
     marginBottom: "unset",
+    borderTop: "1px solid gray",
+    width: "90%",
+    marginInline: "auto",
+    paddingTop: "1rem",
   };
 
   let darker = containerDark ? "bg-dark" : "bg-light";
@@ -25,7 +29,8 @@ const Footprint = () => {
         borderRadius: 0,
         border: "none",
         marginInline: "auto",
-        marginTop: "3rem",
+        marginTop: "0",
+        marginBottom: "0",
       }}
     >
       <div className="footprint" style={textStyle}>
