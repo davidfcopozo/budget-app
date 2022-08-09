@@ -54,11 +54,11 @@ function Parent() {
     <>
       {/* React Bootstrap container to wrap the app up */}
       <Container
-        style={{ minWidth: "100%", paddingBottom: "5rem" }}
+        style={{ minWidth: "100%", height: "fit-content" }}
         className={darker}
       >
         <Container
-          style={{ minWidth: "90%" }}
+          style={{ minWidth: "90%", paddingBottom: "5%" }}
           className={`${darker} align-content-center`}
         >
           <Navbar size="sm" className={"justify-content-between "}>
