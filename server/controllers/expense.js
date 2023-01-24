@@ -2,7 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const Expense = require("../models/Expense");
 
 const getAllExpenses = async (req, res) => {
-  const expenses = await Expense.find({ createdBy: "user1" }).sort("createdAt");
+  const expenses = await Expense.find({ createdBy: "user2" }).sort("createdAt");
 
   res.status(StatusCodes.OK).json({ expenses, count: expenses.length });
 };

@@ -10,6 +10,7 @@ app.use(express.json());
 //Routes
 const budgetRouter = require("./routes/budgets");
 const expenseRouter = require("./routes/expenses");
+const authRouter = require("./routes/auth");
 
 app.get("/api", (req, res) => {
   res.send("Hello World");
@@ -17,6 +18,7 @@ app.get("/api", (req, res) => {
 
 app.use("/api/budgets", budgetRouter);
 app.use("/api/expenses", expenseRouter);
+app.use("/", authRouter);
 
 const port = process.env.PORT || 8080;
 
