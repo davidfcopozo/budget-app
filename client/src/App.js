@@ -1,8 +1,6 @@
 import Dashboard from "./components/Dashboard";
-//import Routing from "./components/Routing";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ThemesProvider } from "./contexts/ThemesContext";
-//import { Container } from "react-bootstrap";
 import AuthProvider from "./contexts/AuthContext";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { Signup } from "./components/Signup";
