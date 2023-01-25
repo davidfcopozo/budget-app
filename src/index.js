@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { BudgetsProvider} from './contexts/BudgetsContext'
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BudgetsProvider } from "./contexts/BudgetsContext";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -12,12 +12,12 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAS4IElsX0XTl6zSDrzIJdn0IHCLXXTVfQ",
-  authDomain: "budget-buddy-d0db6.firebaseapp.com",
-  projectId: "budget-buddy-d0db6",
-  storageBucket: "budget-buddy-d0db6.appspot.com",
-  messagingSenderId: "206997942935",
-  appId: "1:206997942935:web:159847da742de02f346fd2"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_API_ID,
 };
 
 // Initialize Firebase
@@ -29,7 +29,7 @@ ReactDOM.render(
       <App />
     </BudgetsProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
