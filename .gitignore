@@ -1,5 +1,0 @@
-client/.env
-server/.env
-server/config/serviceAccountKey.json
-
-dist
