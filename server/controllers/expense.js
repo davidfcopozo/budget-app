@@ -28,11 +28,11 @@ const createExpense = async (req, res) => {
 const updateExpense = async (req, res) => {
   //Get current/signed in user from firebase
   const {
-    body: { description, amount, budgetId: category },
+    body: { description, amount },
     params: { id },
   } = req;
 
-  if (description === "" && amount === "" && category === "") {
+  if (description === "" && amount === "") {
     throw new Error("Please provide the data  to be updated");
   }
 
