@@ -12,7 +12,25 @@ const getAllBudgets = async (req, res) => {
 };
 
 const createBudget = async (req, res) => {
+  /* const budget = await Budget.create(req.body);
+  res.status(StatusCodes.CREATED).json({ budget }); */
+
+  //Get current/signed in user from firebase
+  const {
+    body: { name, maxExpending },
+  } = req;
+
+  if (name === "" || maxExpending === "") {
+    throw new Error(
+      "Name and maximun expending amount are required for this request"
+    );
+  }
+  if (maxExpending <= 0) {
+    throw new Error("The maximun expending amount must be greater than zero");
+  }
+
   const budget = await Budget.create(req.body);
+
   res.status(StatusCodes.CREATED).json({ budget });
 };
 
