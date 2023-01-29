@@ -1,8 +1,10 @@
 import { Button, Form, Modal } from "react-bootstrap";
 import { useRef } from "react";
-import { UNCATEGORIZED_BUDGETID, useBudgets } from "../contexts/BudgetsContext";
+import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
 import { content } from "../components/Languages";
+import { useQueryClient } from "react-query";
+import usePostRequest from "../hooks/usePostRequest";
 
 export default function AddExpenseModal({
   show,
@@ -19,11 +21,13 @@ export default function AddExpenseModal({
 
   function handleSubmit(e) {
     e.preventDefault();
-    addExpense({
+    const expense = {
       description: descriptionRef.current.value,
-      amount: parseFloat(amountRef.current.value),
+      amount: amountRef.current.value,
       budgetId: budgetIdRef.current.value,
-    });
+      createdBy: "user2",
+    };
+    addExpense(expense);
     handleClose();
   }
 
@@ -53,11 +57,11 @@ export default function AddExpenseModal({
           <Form.Group className="mb-3" controlId="budgetId">
             <Form.Label>{content[lang]["addExpenseForm"]["budget"]}</Form.Label>
             <Form.Select ref={budgetIdRef} defaultValue={defaultBudgetId}>
-              <option id={UNCATEGORIZED_BUDGETID}>
+              <option id={UNCATEGORIZED_BUDGET}>
                 {content[lang]["titles"]["uncategorized"]}
               </option>
-              {budgets.map((budget) => (
-                <option key={budget.id} value={budget.id}>
+              {budgets?.map((budget) => (
+                <option key={budget._id} value={budget._id}>
                   {budget.name}
                 </option>
               ))}

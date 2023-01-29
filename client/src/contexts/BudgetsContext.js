@@ -1,12 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "react-query";
 import { v4 as uuidV4 } from "uuid";
+import useDeleteRequest from "../hooks/useDeleteRequest";
+import useFetchRequest from "../hooks/useFetchRequest";
 import useLocalStorage from "../hooks/useLocalStorage";
+import usePostRequest from "../hooks/usePostRequest";
 
 // Create a context
 const BudgetsContext = React.createContext();
+//const queryClient = useQueryClient();
 
 // Make and saved in a variable the ID for uncategorized budgets
-export const UNCATEGORIZED_BUDGETID = "Uncategorized";
+export const UNCATEGORIZED_BUDGET = "Uncategorized";
 
 // Create and make the hook exportable
 /* This hook uses the BudgetsContext that enable us to access all of the props wrapped around
@@ -19,75 +24,198 @@ export function useBudgets() {
 childen as parameter, all data insed it, passes to childen so we can use it as value in 
 <BudgetsContext.Provider />*/
 export const BudgetsProvider = ({ children }) => {
-  /* Make states for budgets, expenses and theme and set them to local storage, the first parameter being
-    the key and the second one the value*/
+  const queryClient = useQueryClient();
 
-  const [budgets, setBudgets] = useLocalStorage("budgets", []),
-    [expenses, setExpenses] = useLocalStorage("expenses", []);
+  const budgetsQuery = useFetchRequest(
+    "budgets",
+    "http://localhost:8080/api/budgets"
+  );
+  const expensesQuery = useFetchRequest(
+    "expenses",
+    "http://localhost:8080/api/expenses"
+  );
 
-  /* Function that gets the expenses of a budget making sure that the expenses share the ID of the
-      budget in question */
-  function getBudgetExpenses(budgetId) {
-    return expenses.filter((expense) => expense.budgetId === budgetId);
+  const [budgets, setBudgets] = useState();
+  const [expenses, setExpenses] = useState();
+
+  function updateValues() {
+    setBudgets(budgetsQuery?.data?.budgets);
+    setExpenses(expensesQuery?.data?.expenses);
   }
 
-  /* Function to add an expense and checks if there is any previous expense to add it to them.
-      1- Checks if the expense had already been added to return the same previous expenses.
-      2- If it is a new expense then it will add it to the previous expenses list asigning a new ID,
-      and the budgetId it corresponds to. */
-  function addExpense({ description, amount, budgetId }) {
-    setExpenses((prevExpenses) => {
-      if (prevExpenses.find((expense) => expense.name === budgetId)) {
-        return prevExpenses;
-      }
-      return [...prevExpenses, { id: uuidV4(), description, amount, budgetId }];
-    });
-  }
+  useEffect(() => {
+    updateValues();
+  }, [
+    budgetsQuery.isLoading ||
+      expensesQuery.isLoading ||
+      budgetsQuery.isFetching ||
+      expensesQuery.isFetching,
+    budgets,
+    expenses,
+  ]);
 
-  /* Function to add a Budget 
-      1- Checks if the Budget had already been added to return the same previous Budgets.
+  const postBudgetMutation = usePostRequest(
+    "http://localhost:8080/api/budgets",
+    function onSuccess() {
+      queryClient.invalidateQueries(["budgets"]);
+    },
+    function onError() {
+      // get the cached values of 'get-planets'
+      const previousBudgets = queryClient.getQueryData(["budgets"]);
+      queryClient.setQueryData(["budgets", previousBudgets]);
+    },
+    async function onMutate(budget) {
+      // cancel queries against this query key
+      // so that if any other component is consuming this data
+      // is not able to get the old data
+      await queryClient.cancelQueries(["budgets"]);
 
-      2- If it is a new Budget then it will add it to the previous Budgets list asigning a new ID, name
-      and the budget max value. */
-  function addBudget({ name, max }) {
-    setBudgets((prevBudgets) => {
-      if (prevBudgets.find((budget) => budget.name === name)) {
-        return prevBudgets;
-      }
-      return [...prevBudgets, { id: uuidV4(), name, max }];
-    });
-  }
+      // get the cached values of 'get-planets'
+      const previousBudgets = queryClient.getQueryData(["budgets"]);
 
-  /* Function to delete an expense
-      1- It will re-set all of the previous expenses as long as they do not have the expense's ID in question
-      using filter so that it will re-set all of the expenses but the one being deleted. */
-  function deleteExpense({ id }) {
-    setExpenses((prevExpenses) => {
-      return prevExpenses.filter((expense) => expense.id !== id);
-    });
-  }
+      // set the cached data with an added object
+      // i.e the new planet posted
+      queryClient.setQueryData(
+        ["budgets"],
+        [
+          ...previousBudgets,
+          {
+            name: budget?.name,
+            maxExpending: budget?.maxExpending,
+            createdBy: budget?.createdBy,
+          },
+        ]
+      );
 
-  /* Function to delete a Budget
-      1- It will re-set all of the expenses by checking if they do not share the same ID with the budget
-      being deleted and if they do share the same ID then it will add those expenses from the budget
-      being deleted and add them to the Uncategorized budget.
+      // return previousValue here
+      // we will use it in the next section
+      return { previousBudgets };
+    }
+  );
 
-      2- It will re-set all of the previous Budgets as long as they do not have the Budget's ID in question
-      using filter so that it will re-set all of the Budgets but the one being deleted. 
-      
-      3- And will re-set all of the previous Budgets but the one being deleted.*/
-  function deleteBudget({ id }) {
-    setExpenses((prevExpenses) => {
-      return prevExpenses.map((expense) => {
-        if (expense.budgetId !== id) return expense;
+  const postExpenseMutation = usePostRequest(
+    "http://localhost:8080/api/expenses",
+    function onSuccess() {
+      queryClient.invalidateQueries(["budgets"]);
+    },
+    function onError() {
+      // get the cached values of 'get-planets'
+      const previousExpenses = queryClient.getQueryData(["expenses"]);
+      queryClient.setQueryData(["expenses", previousExpenses]);
+    },
+    async function onMutate(expense) {
+      // cancel queries against this query key
+      // so that if any other component is consuming this data
+      // is not able to get the old data
+      await queryClient.cancelQueries(["expenses"]);
 
-        return { ...expense, budgetId: UNCATEGORIZED_BUDGETID };
+      // get the cached values of 'get-planets'
+      const previousExpenses = queryClient.getQueryData(["expenses"]);
+
+      // set the cached data with an added object
+      // i.e the new planet posted
+      queryClient.setQueryData(
+        ["expenses"],
+        [
+          ...previousExpenses,
+          {
+            description: expense?.description,
+            amount: expense?.amount,
+            budgetId: expense?.budgetCategory,
+            createdBy: expense?.createdBy,
+          },
+        ]
+      );
+
+      // return previousValue here
+      // we will use it in the next section
+      return { previousExpenses };
+    }
+  );
+
+  const deleteExpenseMutation = useDeleteRequest(
+    function onSuccess() {
+      queryClient.invalidateQueries(["budgets"]);
+    },
+    function onError() {
+      // get the cached values of 'get-planets'
+      const previousExpenses = queryClient.getQueryData(["expenses"]);
+      queryClient.setQueryData(["expenses", previousExpenses]);
+    },
+    async function onMutate(id) {
+      // cancel queries against this query key
+      // so that if any other component is consuming this data
+      // is not able to get the old data
+      await queryClient.cancelQueries(["expenses"]);
+
+      // get the cached values of 'get-planets'
+      const previousExpenses = queryClient.getQueryData(["expenses"]);
+
+      // set the cached data with an added object
+      // i.e the new planet posted
+      queryClient.setQueryData(
+        ["expenses", id],
+        [
+          previousExpenses?.map((expense) => {
+            return previousExpenses.filter(expense.id !== id);
+          }),
+        ]
+      );
+    }
+  );
+
+  const deleteBudgetMutation = useDeleteRequest(
+    function onSuccess() {
+      queryClient.invalidateQueries(["budgets"]);
+    },
+    function onError() {
+      // get the cached values of 'get-planets'
+      const previousExpenses = queryClient.getQueryData(["expenses"]);
+      queryClient.setQueryData(["expenses", previousExpenses]);
+    },
+    async function onMutate(id) {
+      // cancel queries against this query key
+      // so that if any other component is consuming this data
+      // is not able to get the old data
+      await queryClient.cancelQueries(["expenses"]);
+
+      // get the cached values of 'get-planets'
+      const previousExpenses = queryClient.getQueryData(["expenses"]);
+      const previousBudgets = queryClient.getQueryData(["budgets"]);
+
+      // set the cached data with an added object
+      // i.e the new planet posted
+      queryClient.setQueryData(["expenses", id], () => {
+        return previousExpenses.map((expense) => {
+          if (expense._id !== id) return expense;
+
+          return { ...expense, budgetCategory: UNCATEGORIZED_BUDGET };
+        });
       });
-    });
+      queryClient.setQueryData(["budgets", id], () => {
+        return previousBudgets.filter((budget) => budget.id !== id);
+      });
+    }
+  );
 
-    setBudgets((prevBudgets) => {
-      return prevBudgets.filter((budget) => budget.id !== id);
-    });
+  function getBudgetExpenses(budgetId) {
+    //console.log(filtered);
+    return expenses?.filter((expense) => expense?.budgetId === budgetId);
+  }
+
+  function addBudget(budget) {
+    return postBudgetMutation.mutate(budget);
+  }
+
+  function addExpense(expense) {
+    postExpenseMutation.mutate(expense);
+    return expensesQuery.refetch;
+  }
+  async function deleteExpense({ url }) {
+    return deleteExpenseMutation(url);
+  }
+  async function deleteBudget({ url }) {
+    return deleteBudgetMutation(url);
   }
 
   return (

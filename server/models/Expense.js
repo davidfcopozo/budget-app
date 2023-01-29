@@ -11,7 +11,7 @@ const ExpenseSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Please provide an amount"],
     },
-    budgetCategory: {
+    budgetId: {
       type: String,
       default: "uncategorized",
       maxlength: 50,

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Navbar, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import AddBudgetModal from "./AddBudgetModal";
@@ -6,7 +6,7 @@ import AddExpenseModal from "./AddExpenseModal";
 import BudgetCard from "./BudgetCard";
 import UncategorizedBudgetCard from "./UncategorizedBudgetCard";
 import TotalBudgetCard from "./TotalBudgetCard";
-import { UNCATEGORIZED_BUDGETID, useBudgets } from "../contexts/BudgetsContext";
+import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import ViewExpensesModal from "./ViewExpensesModal";
 import ThemeButton from "./ThemeButton";
 import { useTheme } from "../contexts/ThemesContext";
@@ -16,6 +16,8 @@ import { content } from "./Languages";
 import logo from "../assets/logo.png";
 import Footprint from "./Footprint";
 import { Link } from "react-router-dom";
+import useFetchRequest from "../hooks/useFetchRequest";
+import { useQuery, useQueryClient } from "react-query";
 
 function Dashboard() {
   /* Handles the state of "Show" prop in AddBudgetModal.js*/
@@ -28,7 +30,7 @@ function Dashboard() {
   const [responsive, setResponsive] = useState(
     window.matchMedia("(max-width: 767px)").matches ? "vertical" : "horizontal"
   );
-  const { budgets, getBudgetExpenses } = useBudgets();
+  //const { budgets, getBudgetExpenses } = useBudgets();
 
   window.onresize = (event) => {
     setScreenSize(window.innerWidth);
@@ -51,14 +53,9 @@ function Dashboard() {
     setAddExpenseModalBudgetId(budgetId);
   }
 
-  async function fetchHandler() {
-    await fetch("http://localhost:8080/api/budgets", {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((response) => console.log(response))
-      .catch((err) => console.log(err));
-  }
+  const { budgets, getBudgetExpenses } = useBudgets();
+
+  //const headers = { Authorization: `Bearer ${user.accessToken}` };
 
   return (
     <>
@@ -91,14 +88,11 @@ function Dashboard() {
               className="mb-4 align-items-md-center"
             >
               <Link to="/profile">Profile</Link>
-
-              <Button onClick={fetchHandler}>Fetch</Button>
               <ThemeButton />
               <LanguageSelect />
             </Stack>
           </Navbar>
 
-          {/* Stacks buttons horizontally with 2 rem gap or margin */}
           <Stack
             direction={responsive}
             gap="2"
@@ -130,20 +124,20 @@ function Dashboard() {
               alignItems: "flex-start",
             }}
           >
-            {budgets.map((budget) => {
-              const amount = getBudgetExpenses(budget.id).reduce(
+            {budgets?.map((budget) => {
+              const amount = getBudgetExpenses(budget._id)?.reduce(
                 (total, expense) => total + expense.amount,
                 0
               );
               return (
                 <BudgetCard
-                  key={budget.id}
+                  key={budget._id}
                   name={budget.name}
                   amount={amount}
-                  max={budget.max}
-                  onAddExpenseClick={() => openAddExpenseModal(budget.id)}
+                  maxExpending={budget.maxExpending}
+                  onAddExpenseClick={() => openAddExpenseModal(budget._id)}
                   onViewExpenseClick={() =>
-                    setViewExpensesModalBudgetId(budget.id)
+                    setViewExpensesModalBudgetId(budget._id)
                   }
                 />
               );
@@ -152,7 +146,7 @@ function Dashboard() {
             <UncategorizedBudgetCard
               onAddExpenseClick={openAddExpenseModal}
               onViewExpenseClick={() =>
-                setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGETID)
+                setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGET)
               }
             />
 

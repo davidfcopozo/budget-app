@@ -1,34 +1,39 @@
 import { useEffect, useState } from "react";
 import { Button, Modal, Stack } from "react-bootstrap";
-import { UNCATEGORIZED_BUDGETID, useBudgets } from "../contexts/BudgetsContext";
+import { useQueryClient } from "react-query";
+import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
-import { useFetch } from "../hooks/useFetch";
+import useFetchRequest, { useFetch } from "../hooks/useFetchRequest";
 import { currencyFormatter } from "../utils";
 import { content } from "./Languages";
-import { useQuery } from "react-query";
-import axios from "axios";
 
 export default function ViewExpensesModal({ budgetId, handleClose }) {
   const lang = useDynamicLang();
+
+  const queryClient = useQueryClient();
+  //const budgets = queryClient.getQueryData(["budgets"]);
 
   const { getBudgetExpenses, budgets, deleteBudget, deleteExpense } =
     useBudgets();
 
   const budget =
-    UNCATEGORIZED_BUDGETID === budgetId
-      ? { name: "Ucategorized", id: UNCATEGORIZED_BUDGETID }
-      : budgets.find((b) => b.id === budgetId);
+    UNCATEGORIZED_BUDGET === budgetId
+      ? { name: "Ucategorized", id: UNCATEGORIZED_BUDGET }
+      : budgets?.find((b) => b._id === budgetId);
+
+  const expensesQuery = useFetchRequest(
+    "expenses",
+    "http://localhost:8080/api/expenses"
+  );
   const expenses = getBudgetExpenses(budgetId);
-  /* --------------------------------------------- */
-  const [expen, setExpen] = useState();
 
-  //const [data, error, loading] = useFetch("http://localhost:8080/api/expenses");
-
-  const { data, isLoading } = useQuery("expen", () => {
-    return axios.get("http://localhost:8080/api/expenses");
-  });
-
-  console.log(data);
+  useEffect(() => {
+    console.log(budgetId);
+    console.log(expenses);
+    expenses?.map((ex, i) => {
+      console.log(ex);
+    });
+  }, [expensesQuery.isFetching || expensesQuery.isLoading]);
 
   return (
     <Modal show={budgetId != null} onHide={handleClose}>
@@ -40,7 +45,7 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
               {content[lang]["titles"]["viewExpensesTitle"]} - {budgets?.name}
             </div>
             {/* avoid deleting the uncategorized button by the condition set out below */}
-            {budgetId !== UNCATEGORIZED_BUDGETID && (
+            {budgetId !== UNCATEGORIZED_BUDGET && (
               <Button
                 variant="outline-danger"
                 onClick={() => {
@@ -56,17 +61,19 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
       </Modal.Header>
       <Modal.Body>
         <Stack direction="vertical" gap="3">
-          {expenses.map((expense, i) => (
-            <Stack direction="horizontal" gap="2" key={expense.id}>
-              <div className="me-auto fs-4">{expense.description}</div>
+          {expenses?.map((expense) => (
+            <Stack direction="horizontal" gap="2" key={expense._id}>
+              <div className="me-auto fs-4">{expense?.description}</div>
               <div className="fs-5">
-                {currencyFormatter.format(expense.amount)}
+                {currencyFormatter.format(expense?.amount)}
               </div>
               <Button
                 size="sm"
                 variant="outline-danger"
                 onClick={() => {
-                  deleteExpense(expense);
+                  deleteExpense(
+                    `"http://localhost:8080/api/budgets/${expense}`
+                  );
                 }}
               >
                 &times;

@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BudgetsProvider } from "./contexts/BudgetsContext";
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import firebaseConfig from "../src/config/firebase.config";
@@ -15,9 +15,7 @@ import firebaseConfig from "../src/config/firebase.config";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BudgetsProvider>
-      <App />
-    </BudgetsProvider>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
