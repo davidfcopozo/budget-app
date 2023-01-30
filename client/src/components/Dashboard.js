@@ -30,7 +30,8 @@ function Dashboard() {
   const [responsive, setResponsive] = useState(
     window.matchMedia("(max-width: 767px)").matches ? "vertical" : "horizontal"
   );
-  //const { budgets, getBudgetExpenses } = useBudgets();
+
+  const { budgets, getBudgetExpenses } = useBudgets();
 
   window.onresize = (event) => {
     setScreenSize(window.innerWidth);
@@ -38,9 +39,7 @@ function Dashboard() {
   };
 
   const lang = useDynamicLang();
-
   const containerDark = useTheme();
-
   let darker = containerDark ? "bg-dark" : "bg-light";
 
   let titleStyle = {
@@ -53,22 +52,29 @@ function Dashboard() {
     setAddExpenseModalBudgetId(budgetId);
   }
 
-  const { budgets, getBudgetExpenses } = useBudgets();
-
   //const headers = { Authorization: `Bearer ${user.accessToken}` };
 
   return (
     <>
       {/* React Bootstrap container to wrap the app up */}
       <Container
-        style={{ minWidth: "100%", height: "100vh" }}
+        style={{
+          minWidth: "100%",
+          display: "flex",
+          flexDirection: "column",
+          marginBottom: "auto",
+        }}
         className={darker}
       >
         <Container
           style={{
+            height: "100vh",
+            marginBottom: "auto",
             minWidth: "90%",
-            paddingBottom: "5%",
             height: "fit-content",
+            display: "flex",
+            flexDirection: "column",
+            justifyItems: "space-between",
           }}
           className={`${darker} align-content-center`}
         >
@@ -152,25 +158,24 @@ function Dashboard() {
 
             <TotalBudgetCard style={{ marginBottom: "10rem" }} />
           </div>
+          <AddBudgetModal
+            show={showAddBudgetModal}
+            handleClose={() => setShowAddBudgetModal(false)}
+          />
+
+          <AddExpenseModal
+            show={showAddExpenseModal}
+            defaultBudgetId={addExpenseModalBudgetId}
+            handleClose={() => setShowAddExpenseModal(false)}
+          />
+
+          <ViewExpensesModal
+            budgetId={viewExpensesModalBudgetId}
+            handleClose={() => setViewExpensesModalBudgetId()}
+          />
         </Container>
+        <Footprint />
       </Container>
-      <AddBudgetModal
-        show={showAddBudgetModal}
-        handleClose={() => setShowAddBudgetModal(false)}
-      />
-
-      <AddExpenseModal
-        show={showAddExpenseModal}
-        defaultBudgetId={addExpenseModalBudgetId}
-        handleClose={() => setShowAddExpenseModal(false)}
-      />
-
-      <ViewExpensesModal
-        budgetId={viewExpensesModalBudgetId}
-        handleClose={() => setViewExpensesModalBudgetId()}
-      />
-
-      <Footprint />
     </>
   );
 }

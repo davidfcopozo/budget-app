@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
 import { Button, Modal, Stack } from "react-bootstrap";
-import { useQueryClient } from "react-query";
 import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
-import useFetchRequest, { useFetch } from "../hooks/useFetchRequest";
 import { currencyFormatter } from "../utils";
 import { content } from "./Languages";
 
 export default function ViewExpensesModal({ budgetId, handleClose }) {
   const lang = useDynamicLang();
-
-  const queryClient = useQueryClient();
-  //const budgets = queryClient.getQueryData(["budgets"]);
 
   const { getBudgetExpenses, budgets, deleteBudget, deleteExpense } =
     useBudgets();
@@ -21,19 +15,7 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
       ? { name: "Ucategorized", id: UNCATEGORIZED_BUDGET }
       : budgets?.find((b) => b._id === budgetId);
 
-  const expensesQuery = useFetchRequest(
-    "expenses",
-    "http://localhost:8080/api/expenses"
-  );
   const expenses = getBudgetExpenses(budgetId);
-
-  useEffect(() => {
-    console.log(budgetId);
-    console.log(expenses);
-    expenses?.map((ex, i) => {
-      console.log(ex);
-    });
-  }, [expensesQuery.isFetching || expensesQuery.isLoading]);
 
   return (
     <Modal show={budgetId != null} onHide={handleClose}>
@@ -48,8 +30,8 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
             {budgetId !== UNCATEGORIZED_BUDGET && (
               <Button
                 variant="outline-danger"
-                onClick={() => {
-                  deleteBudget(budget);
+                onClick={async () => {
+                  await deleteBudget(budget?._id);
                   handleClose();
                 }}
               >
@@ -70,10 +52,8 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
               <Button
                 size="sm"
                 variant="outline-danger"
-                onClick={() => {
-                  deleteExpense(
-                    `"http://localhost:8080/api/budgets/${expense}`
-                  );
+                onClick={async () => {
+                  await deleteExpense(expense?._id);
                 }}
               >
                 &times;

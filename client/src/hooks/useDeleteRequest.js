@@ -3,9 +3,11 @@ import axios from "axios";
 
 function useDeleteRequest(url, onSuccess, onError, onMutate) {
   const deleteExpenseMutation = useMutation(
-    async () => {
-      const response = await axios.delete(url);
-      return response.data;
+    async (id) => {
+      /* console.log(url);
+      console.log(id); */
+      const response = await axios.delete(`${url}/${id}`);
+      return response;
     },
     { onSuccess: onSuccess },
     { onError: onError },

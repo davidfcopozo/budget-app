@@ -12,10 +12,10 @@ const Footprint = () => {
     color: containerDark ? "white" : "#000",
     transition: "all 0.8s ease-in",
     textDecoration: "none",
-    marginTop: "unset",
+    marginTop: "auto",
     marginBottom: "unset",
     borderTop: "1px solid gray",
-    width: "90%",
+    width: "100vh",
     marginInline: "auto",
     paddingTop: "1rem",
   };
@@ -29,8 +29,7 @@ const Footprint = () => {
         borderRadius: 0,
         border: "none",
         marginInline: "auto",
-        marginTop: "0",
-        marginBottom: "0",
+        marginTop: "2rem",
       }}
     >
       <div className="footprint" style={textStyle}>

@@ -96,7 +96,7 @@ export const BudgetsProvider = ({ children }) => {
   const postExpenseMutation = usePostRequest(
     "http://localhost:8080/api/expenses",
     function onSuccess() {
-      queryClient.invalidateQueries(["budgets"]);
+      queryClient.invalidateQueries(["expenses"]);
     },
     function onError() {
       // get the cached values of 'get-planets'
@@ -121,7 +121,7 @@ export const BudgetsProvider = ({ children }) => {
           {
             description: expense?.description,
             amount: expense?.amount,
-            budgetId: expense?.budgetCategory,
+            budgetId: expense?.budgetId,
             createdBy: expense?.createdBy,
           },
         ]
@@ -134,8 +134,9 @@ export const BudgetsProvider = ({ children }) => {
   );
 
   const deleteExpenseMutation = useDeleteRequest(
+    `http://localhost:8080/api/expenses`,
     function onSuccess() {
-      queryClient.invalidateQueries(["budgets"]);
+      queryClient.invalidateQueries(["expenses"]);
     },
     function onError() {
       // get the cached values of 'get-planets'
@@ -154,7 +155,7 @@ export const BudgetsProvider = ({ children }) => {
       // set the cached data with an added object
       // i.e the new planet posted
       queryClient.setQueryData(
-        ["expenses", id],
+        ["expenses"],
         [
           previousExpenses?.map((expense) => {
             return previousExpenses.filter(expense.id !== id);
@@ -165,13 +166,14 @@ export const BudgetsProvider = ({ children }) => {
   );
 
   const deleteBudgetMutation = useDeleteRequest(
+    `http://localhost:8080/api/budgets`,
     function onSuccess() {
       queryClient.invalidateQueries(["budgets"]);
     },
     function onError() {
       // get the cached values of 'get-planets'
-      const previousExpenses = queryClient.getQueryData(["expenses"]);
-      queryClient.setQueryData(["expenses", previousExpenses]);
+      const previousBudgets = queryClient.getQueryData(["budgets"]);
+      queryClient.setQueryData(["budgets", previousBudgets]);
     },
     async function onMutate(id) {
       // cancel queries against this query key
@@ -185,21 +187,19 @@ export const BudgetsProvider = ({ children }) => {
 
       // set the cached data with an added object
       // i.e the new planet posted
-      queryClient.setQueryData(["expenses", id], () => {
+      queryClient.setQueryData(["expenses"], () => {
         return previousExpenses.map((expense) => {
-          if (expense._id !== id) return expense;
-
-          return { ...expense, budgetCategory: UNCATEGORIZED_BUDGET };
+          if (expense.budgetId !== id) return expense;
+          return { ...expense, budgetId: UNCATEGORIZED_BUDGET };
         });
       });
-      queryClient.setQueryData(["budgets", id], () => {
+      queryClient.setQueryData(["budgets"], () => {
         return previousBudgets.filter((budget) => budget.id !== id);
       });
     }
   );
 
   function getBudgetExpenses(budgetId) {
-    //console.log(filtered);
     return expenses?.filter((expense) => expense?.budgetId === budgetId);
   }
 
@@ -208,14 +208,13 @@ export const BudgetsProvider = ({ children }) => {
   }
 
   function addExpense(expense) {
-    postExpenseMutation.mutate(expense);
-    return expensesQuery.refetch;
+    return postExpenseMutation.mutate(expense);
   }
-  async function deleteExpense({ url }) {
-    return deleteExpenseMutation(url);
+  async function deleteExpense(id) {
+    return deleteExpenseMutation.mutate(id);
   }
-  async function deleteBudget({ url }) {
-    return deleteBudgetMutation(url);
+  function deleteBudget(id) {
+    return deleteBudgetMutation.mutate(id);
   }
 
   return (
