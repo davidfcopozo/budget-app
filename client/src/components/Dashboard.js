@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Navbar, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import AddBudgetModal from "./AddBudgetModal";
@@ -16,8 +16,6 @@ import { content } from "./Languages";
 import logo from "../assets/logo.png";
 import Footprint from "./Footprint";
 import { Link } from "react-router-dom";
-import useFetchRequest from "../hooks/useFetchRequest";
-import { useQuery, useQueryClient } from "react-query";
 
 function Dashboard() {
   /* Handles the state of "Show" prop in AddBudgetModal.js*/
@@ -60,122 +58,106 @@ function Dashboard() {
       <Container
         style={{
           minWidth: "100%",
+          minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
-          marginBottom: "auto",
+          paddingBottom: "2rem",
         }}
         className={darker}
       >
-        <Container
-          style={{
-            height: "100vh",
-            marginBottom: "auto",
-            minWidth: "90%",
-            height: "fit-content",
-            display: "flex",
-            flexDirection: "column",
-            justifyItems: "space-between",
-          }}
-          className={`${darker} align-content-center`}
-        >
-          <Navbar size="sm" className={"justify-content-between "}>
-            <Navbar.Brand>
-              <img
-                src={logo}
-                width="120"
-                height="120"
-                className={"justify-content-start"}
-                alt="Budget Buddy"
-              />
-            </Navbar.Brand>
-            <Stack
-              direction="horizontal"
-              gap="2"
-              className="mb-4 align-items-md-center"
-            >
-              <Link to="/profile">Profile</Link>
-              <ThemeButton />
-              <LanguageSelect />
-            </Stack>
-          </Navbar>
-
-          <Stack
-            direction={responsive}
-            gap="2"
-            className="mb-4 d-flex flex-wrap"
-          >
-            <h1 style={titleStyle} className="me-auto title">
-              {content[lang]["titles"]["budgets"]}
-            </h1>
-            <Button
-              variant="primary"
-              onClick={() => setShowAddBudgetModal(true)}
-              className="add-budget-btn"
-            >
-              {content[lang]["buttons"]["addBudget"]}
-            </Button>
-            <Button
-              variant="outline-primary"
-              onClick={openAddExpenseModal}
-              className="add-expense-btn"
-            >
-              {content[lang]["buttons"]["addExpense"]}
-            </Button>
-          </Stack>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColums: "repeat(auto-fill, minmax(300px, 1fr))",
-              gap: "1rem",
-              alignItems: "flex-start",
-            }}
-          >
-            {budgets?.map((budget) => {
-              const amount = getBudgetExpenses(budget._id)?.reduce(
-                (total, expense) => total + expense.amount,
-                0
-              );
-              return (
-                <BudgetCard
-                  key={budget._id}
-                  name={budget.name}
-                  amount={amount}
-                  maxExpending={budget.maxExpending}
-                  onAddExpenseClick={() => openAddExpenseModal(budget._id)}
-                  onViewExpenseClick={() =>
-                    setViewExpensesModalBudgetId(budget._id)
-                  }
-                />
-              );
-            })}
-
-            <UncategorizedBudgetCard
-              onAddExpenseClick={openAddExpenseModal}
-              onViewExpenseClick={() =>
-                setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGET)
-              }
+        <Navbar size="sm" className={"justify-content-between "}>
+          <Navbar.Brand>
+            <img
+              src={logo}
+              width="120"
+              height="120"
+              className={"justify-content-start"}
+              alt="Budget Buddy"
             />
+          </Navbar.Brand>
+          <Stack
+            direction="horizontal"
+            gap="2"
+            className="mb-4 align-items-md-center"
+          >
+            <Link to="/profile">Profile</Link>
+            <ThemeButton />
+            <LanguageSelect />
+          </Stack>
+        </Navbar>
 
-            <TotalBudgetCard style={{ marginBottom: "10rem" }} />
-          </div>
-          <AddBudgetModal
-            show={showAddBudgetModal}
-            handleClose={() => setShowAddBudgetModal(false)}
+        <Stack direction={responsive} gap="2" className="mb-4 d-flex flex-wrap">
+          <h1 style={titleStyle} className="me-auto title">
+            {content[lang]["titles"]["budgets"]}
+          </h1>
+          <Button
+            variant="primary"
+            onClick={() => setShowAddBudgetModal(true)}
+            className="add-budget-btn"
+          >
+            {content[lang]["buttons"]["addBudget"]}
+          </Button>
+          <Button
+            variant="outline-primary"
+            onClick={openAddExpenseModal}
+            className="add-expense-btn"
+          >
+            {content[lang]["buttons"]["addExpense"]}
+          </Button>
+        </Stack>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColums: "repeat(auto-fill, minmax(300px, 1fr))",
+            gap: "1rem",
+            alignItems: "flex-start",
+          }}
+        >
+          {budgets?.map((budget) => {
+            const amount = getBudgetExpenses(budget._id)?.reduce(
+              (total, expense) => total + expense.amount,
+              0
+            );
+            return (
+              <BudgetCard
+                key={budget._id}
+                name={budget.name}
+                amount={amount}
+                maxExpending={budget.maxExpending}
+                onAddExpenseClick={() => openAddExpenseModal(budget._id)}
+                onViewExpenseClick={() =>
+                  setViewExpensesModalBudgetId(budget._id)
+                }
+              />
+            );
+          })}
+
+          <UncategorizedBudgetCard
+            onAddExpenseClick={openAddExpenseModal}
+            onViewExpenseClick={() =>
+              setViewExpensesModalBudgetId(UNCATEGORIZED_BUDGET)
+            }
           />
 
-          <AddExpenseModal
-            show={showAddExpenseModal}
-            defaultBudgetId={addExpenseModalBudgetId}
-            handleClose={() => setShowAddExpenseModal(false)}
-          />
+          <TotalBudgetCard style={{ marginBottom: "10rem" }} />
+        </div>
+        <AddBudgetModal
+          show={showAddBudgetModal}
+          handleClose={() => setShowAddBudgetModal(false)}
+        />
 
-          <ViewExpensesModal
-            budgetId={viewExpensesModalBudgetId}
-            handleClose={() => setViewExpensesModalBudgetId()}
-          />
-        </Container>
-        <Footprint />
+        <AddExpenseModal
+          show={showAddExpenseModal}
+          defaultBudgetId={addExpenseModalBudgetId}
+          handleClose={() => setShowAddExpenseModal(false)}
+        />
+
+        <ViewExpensesModal
+          budgetId={viewExpensesModalBudgetId}
+          handleClose={() => setViewExpensesModalBudgetId()}
+        />
       </Container>
+      <Footprint />
     </>
   );
 }
