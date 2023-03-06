@@ -12,7 +12,7 @@ const Footprint = () => {
     color: containerDark ? "white" : "#000",
     transition: "all 0.8s ease-in",
     textDecoration: "none",
-    marginTop: "auto",
+    marginTop: "unset",
     marginBottom: "unset",
     borderTop: "1px solid gray",
     width: "100vh",
@@ -29,14 +29,13 @@ const Footprint = () => {
         borderRadius: 0,
         border: "none",
         marginInline: "auto",
-        marginTop: "2rem",
       }}
     >
       <div className="footprint" style={textStyle}>
         <p>
           {content[lang]["footprint"]["built"]} <br />
           <a
-            href="https://davidfrancisco.netlify.com/"
+            href="https://davidfrancisco.dev/"
             target="_blank"
             rel="noreferrer"
             style={{ textDecoration: "none" }}
