@@ -72,9 +72,9 @@ function AuthProvider({ children }) {
     //Cleanup to unsubscribe
     return unsubscribe;
   }, []);
-  useEffect(() => {
+  /*   useEffect(() => {
     console.log(currentUser);
-  }, [currentUser]);
+  }, [currentUser]); */
 
   //Context value to provide
   const value = {
