@@ -31,14 +31,14 @@ export default function BudgetCard({
           <div className="me-2">{name}</div>
           <div className="d-flex align-items-baseline">
             {currencyFormatter.format(amount)}
-            {
+            {maxExpending && (
               <span className="text-muted fs-6">
                 / {currencyFormatter.format(maxExpending)}
               </span>
-            }
+            )}
           </div>
         </Card.Title>
-        {
+        {maxExpending && (
           <ProgressBar
             className="rounded-pill"
             variant={getProgressBarVariant(amount, maxExpending)}
@@ -46,7 +46,7 @@ export default function BudgetCard({
             min={0}
             max={1000}
           />
-        }
+        )}
         {!hideButtons && (
           <Stack direction="horizontal" gap="2" className="mt-4">
             <Button
