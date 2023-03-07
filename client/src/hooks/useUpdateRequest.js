@@ -1,7 +1,7 @@
 import { useMutation } from "react-query";
 import axios from "axios";
 
-function useUpdateRequest(url, onSuccess, onError, onMutate) {
+function useUpdateRequest(url, { onSuccess, onError, onMutate }) {
   const updateExpenseMutation = useMutation(
     async ({ id, data }) => {
       const response = await axios.put(`${url}/${id}`, data);
