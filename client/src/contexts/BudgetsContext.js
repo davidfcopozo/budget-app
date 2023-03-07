@@ -62,7 +62,7 @@ export const BudgetsProvider = ({ children }) => {
       queryClient.invalidateQueries(["budgets"]);
     },
     function onError() {
-      // get the cached values of 'get-planets'
+      // get the cached values
       const previousBudgets = queryClient.getQueryData(["budgets"]);
       queryClient.setQueryData(["budgets", previousBudgets]);
     },
@@ -72,7 +72,7 @@ export const BudgetsProvider = ({ children }) => {
       // is not able to get the old data
       await queryClient.cancelQueries(["budgets"]);
 
-      // get the cached values of 'get-planets'
+      // get the cached values
       const previousBudgets = queryClient.getQueryData(["budgets"]);
 
       // set the cached data with an added object
@@ -101,7 +101,7 @@ export const BudgetsProvider = ({ children }) => {
       queryClient.invalidateQueries(["expenses"]);
     },
     function onError() {
-      // get the cached values of 'get-planets'
+      // get the cached values
       const previousExpenses = queryClient.getQueryData(["expenses"]);
       queryClient.setQueryData(["expenses", previousExpenses]);
     },
@@ -111,7 +111,7 @@ export const BudgetsProvider = ({ children }) => {
       // is not able to get the old data
       await queryClient.cancelQueries(["expenses"]);
 
-      // get the cached values of 'get-planets'
+      // get the cached values
       const previousExpenses = queryClient.getQueryData(["expenses"]);
 
       // set the cached data with an added object
@@ -141,7 +141,7 @@ export const BudgetsProvider = ({ children }) => {
       queryClient.invalidateQueries(["expenses"]);
     },
     function onError() {
-      // get the cached values of 'get-planets'
+      // get the cached values
       const previousExpenses = queryClient.getQueryData(["expenses"]);
       queryClient.setQueryData(["expenses", previousExpenses]);
     },
@@ -151,7 +151,7 @@ export const BudgetsProvider = ({ children }) => {
       // is not able to get the old data
       await queryClient.cancelQueries(["expenses"]);
 
-      // get the cached values of 'get-planets'
+      // get the cached values
       const previousExpenses = queryClient.getQueryData(["expenses"]);
 
       // set the cached data with an added object
@@ -178,7 +178,6 @@ export const BudgetsProvider = ({ children }) => {
         queryClient.setQueryData(["expenses", previousExpenses]);
       },
       onMutate: async (expense) => {
-        const previousExpenses = queryClient.getQueryData(["expenses"]);
         await queryClient.cancelQueries(["expenses"]);
         queryClient.setQueryData(["expenses"], (oldData) => {
           return [...oldData, expense];
@@ -229,7 +228,7 @@ export const BudgetsProvider = ({ children }) => {
   function deleteBudget(id) {
     const previousExpenses = queryClient.getQueryData(["expenses"]);
     deleteBudgetMutation.mutate(id);
-    return previousExpenses.expenses.map((expense) => {
+    previousExpenses.expenses.map((expense) => {
       if (expense.budgetId !== id) {
         return expense;
       }
@@ -241,21 +240,6 @@ export const BudgetsProvider = ({ children }) => {
         },
       });
     });
-    /* return queryClient.setQueryData(["expenses"], (oldData) => {
-      return oldData.expenses.map((expense) => {
-        if (expense.budgetId !== id) {
-          return expense;
-        }
-        updateExpenseMutation.mutate({
-          id: expense._id,
-          data: {
-            ...expense,
-            budgetId: UNCATEGORIZED_BUDGET,
-          },
-        });
-        return { ...expense };
-      });
-    }); */
   }
 
   return (
