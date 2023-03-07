@@ -55,6 +55,7 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
                 onClick={async () => {
                   await deleteExpense(expense?._id);
                 }}
+                disabled={expenses.isLoading}
               >
                 &times;
               </Button>
