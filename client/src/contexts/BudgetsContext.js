@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import useDeleteRequest from "../hooks/useDeleteRequest";
 import useFetchRequest from "../hooks/useFetchRequest";
 import usePostRequest from "../hooks/usePostRequest";
@@ -221,6 +221,7 @@ export const BudgetsProvider = ({ children }) => {
   function addExpense(expense) {
     return postExpenseMutation.mutate(expense);
   }
+
   async function deleteExpense(id) {
     return deleteExpenseMutation.mutate(id);
   }
