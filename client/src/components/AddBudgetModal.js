@@ -3,36 +3,24 @@ import { useRef } from "react";
 import { useBudgets } from "../contexts/BudgetsContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
 import { content } from "./Languages";
-import usePostRequest from "../hooks/usePostRequest";
-import { useQueryClient } from "react-query";
+import { useAuth } from "../contexts/AuthContext";
 
-export default function AddBudgetModal({
-  show,
-  handleClose,
-  name,
-  maxExpending,
-}) {
+export default function AddBudgetModal({ show, handleClose }) {
   const nameRef = useRef(),
     maxRef = useRef();
   const { addBudget } = useBudgets();
   const lang = useDynamicLang();
 
-  const queryClient = useQueryClient();
+  const { currentUser } = useAuth();
 
   function handleSubmit(e) {
     e.preventDefault();
-    /*         addBudget({
-        name: nameRef.current.value,
-        max: parseFloat(maxRef.current.value)
-        }) */
     const budget = {
       name: nameRef.current.value,
       maxExpending: parseFloat(maxRef.current.value),
-      createdBy: "user2",
+      createdBy: currentUser.uid,
     };
     addBudget(budget);
-    // addBudget(budget);
-    // postBudgetMutation.mutate(budget);
     handleClose();
   }
   return (
