@@ -2,13 +2,13 @@ const { StatusCodes } = require("http-status-codes");
 const Expense = require("../models/Expense");
 
 const getAllExpenses = async (req, res) => {
-  const expenses = await Expense.find({ createdBy: "user2" }).sort("createdAt");
+  const uid = await req.headers.uid;
+  const expenses = await Expense.find({ createdBy: uid }).sort("createdAt");
 
   res.status(StatusCodes.OK).json({ expenses, count: expenses.length });
 };
 
 const createExpense = async (req, res) => {
-  //Get current/signed in user from firebase
   const {
     body: { description, amount },
   } = req;
@@ -26,9 +26,8 @@ const createExpense = async (req, res) => {
 };
 
 const updateExpense = async (req, res) => {
-  //Get current/signed in user from firebase
   const {
-    body: { description, amount },
+    body: { description, amount, createdBy },
     params: { id },
   } = req;
 
@@ -41,7 +40,7 @@ const updateExpense = async (req, res) => {
   }
 
   const expense = await Expense.findByIdAndUpdate(
-    { _id: id, createdBy: "user1" },
+    { _id: id, createdBy: createdBy },
     req.body,
     { new: true, runValidators: true }
   );
@@ -56,11 +55,12 @@ const updateExpense = async (req, res) => {
 const deleteExpense = async (req, res) => {
   const {
     params: { id: expenseId },
+    body: { createdBy },
   } = req;
 
   const expense = await Expense.findByIdAndDelete({
     _id: expenseId,
-    createdBy: "user1",
+    createdBy: createdBy,
   });
 
   if (!expense) {
