@@ -18,11 +18,11 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <BudgetsProvider>
-          <LanguageProvider>
-            <ThemesProvider>
-              <Router>
-                <AuthProvider>
+        <AuthProvider>
+          <BudgetsProvider>
+            <LanguageProvider>
+              <ThemesProvider>
+                <Router>
                   <Routes>
                     <Route
                       exact
@@ -58,12 +58,12 @@ function App() {
                       element={<ForgotPassword />}
                     />
                   </Routes>
-                </AuthProvider>
-              </Router>
-            </ThemesProvider>
-          </LanguageProvider>
-          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-        </BudgetsProvider>
+                </Router>
+              </ThemesProvider>
+            </LanguageProvider>
+            <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+          </BudgetsProvider>
+        </AuthProvider>
       </QueryClientProvider>
     </>
   );
