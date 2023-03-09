@@ -2,7 +2,10 @@ const { StatusCodes } = require("http-status-codes");
 const Budget = require("../models/Budget");
 
 const getAllBudgets = async (req, res) => {
-  const budgets = await Budget.find({ createdBy: "user2" }).sort("createdAt");
+  const uid = await req.headers.uid;
+  const budgets = await Budget.find({
+    createdBy: uid,
+  }).sort("createdAt");
   if (!budgets) {
     throw new Error(
       "There are no budgets, please create a new one and come back"
@@ -12,9 +15,6 @@ const getAllBudgets = async (req, res) => {
 };
 
 const createBudget = async (req, res) => {
-  /* const budget = await Budget.create(req.body);
-  res.status(StatusCodes.CREATED).json({ budget }); */
-
   //Get current/signed in user from firebase
   const {
     body: { name, maxExpending },
@@ -37,7 +37,7 @@ const createBudget = async (req, res) => {
 const updateBudget = async (req, res) => {
   const {
     //Get current/signed in user from firebase
-    body: { name, maxExpending },
+    body: { name, maxExpending, createdBy: currentUser },
     params: { id: budgetId },
   } = req;
 
@@ -48,7 +48,7 @@ const updateBudget = async (req, res) => {
     throw new Error("Maximun expending must be greater than 0");
   }
   const budget = await Budget.findOneAndUpdate(
-    { _id: budgetId, createdBy: "user2" },
+    { _id: budgetId, createdBy: currentUser },
     req.body,
     { new: true, runValidators: true }
   );
@@ -60,11 +60,11 @@ const deleteBudget = async (req, res) => {
   const {
     //Get current/signed in user from firebase
     params: { id: budgetId },
+    body: { createdBy: currentUser },
   } = req;
-
   const budget = await Budget.findOneAndDelete(
     //Get current/signed in user from firebase
-    { _id: budgetId, createdBy: "user2" }
+    { _id: budgetId, createdBy: currentUser }
   );
 
   if (!budget) {
