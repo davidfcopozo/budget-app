@@ -5,6 +5,7 @@ import { useDynamicLang } from "../contexts/LanguageContext";
 import { content } from "../components/Languages";
 import { useQueryClient } from "react-query";
 import usePostRequest from "../hooks/usePostRequest";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function AddExpenseModal({
   show,
@@ -18,6 +19,7 @@ export default function AddExpenseModal({
   const lang = useDynamicLang();
 
   const { addExpense, budgets } = useBudgets();
+  const { currentUser } = useAuth();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -25,7 +27,7 @@ export default function AddExpenseModal({
       description: descriptionRef.current.value,
       amount: amountRef.current.value,
       budgetId: budgetIdRef.current.value,
-      createdBy: "user2",
+      createdBy: currentUser.uid,
     };
     addExpense(expense);
     handleClose();
