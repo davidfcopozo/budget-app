@@ -2,6 +2,7 @@ import { Button, Modal, Stack } from "react-bootstrap";
 import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
 import { currencyFormatter } from "../utils";
+import { XIcon } from "./Icons";
 import { content } from "./Languages";
 
 export default function ViewExpensesModal({ budgetId, handleClose }) {
@@ -26,7 +27,6 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
             <div>
               {content[lang]["titles"]["viewExpensesTitle"]} - {budgets?.name}
             </div>
-            {/* avoid deleting the uncategorized button by the condition set out below */}
             {budgetId !== UNCATEGORIZED_BUDGET && (
               <Button
                 variant="outline-danger"
@@ -57,7 +57,7 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
                 }}
                 disabled={expenses.isLoading}
               >
-                &times;
+                {expenses.isFetching ? "Loading" : <XIcon />}
               </Button>
             </Stack>
           ))}
