@@ -23,7 +23,6 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
       <Modal.Header closeButton>
         <Modal.Title>
           <Stack direction="horizontal" gap="2">
-            {/* If we have a budget defined budget, show it, otherwise ignore it */}
             <div>
               {content[lang]["titles"]["viewExpensesTitle"]} - {budgets?.name}
             </div>
