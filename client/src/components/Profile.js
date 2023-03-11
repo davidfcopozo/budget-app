@@ -18,10 +18,9 @@ export const Profile = () => {
     }
   }
   return (
-    <>
-      <h2 className="text-center w-100 mb-2">Dashboard</h2>
-      <Card>
-        <Card.Body>Profile</Card.Body>
+    <div className="d-flex flex-column align-items-center justify-content-center">
+      <h2 className="text-center w-100 mb-2">Profile</h2>
+      <Card className="d-flex flex-column align-items-center w-75 h-100">
         {error && (
           <Alert variant="danger" className="text-center">
             {error}
@@ -30,15 +29,18 @@ export const Profile = () => {
         <strong>Weoclme</strong>{" "}
         {(currentUser && currentUser.displayName) ||
           (currentUser && currentUser.email)}
-        <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
+        <Link
+          to="/update-profile"
+          className="btn btn-primary mt-3 d-flex flex-row"
+        >
           Update Profile
         </Link>
+        <div className="w-100 text-center mt-2">
+          <Button variant="danger" onClick={handleLogout}>
+            Log Out
+          </Button>
+        </div>
       </Card>
-      <div className="w-100 text-center mt-2">
-        <Button variant="link" onClick={handleLogout}>
-          Log Out
-        </Button>
-      </div>
-    </>
+    </div>
   );
 };
