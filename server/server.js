@@ -3,11 +3,10 @@ const app = express();
 const connectDb = require("./db/connect");
 require("dotenv").config();
 const cors = require("cors");
-const allowedOrigins = require("./config/allowedOrigins");
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: ["https://budget-buddy-backend.onrender.com"],
     credentials: true, //access-control-allow-credentials:true
     optionSuccessStatus: 200,
   })
