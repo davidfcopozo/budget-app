@@ -5,7 +5,7 @@ const getAllBudgets = async (req, res) => {
   const uid = await req.headers.uid;
   const budgets = await Budget.find({
     createdBy: uid,
-  }).sort("createdAt");
+  });
   if (!budgets) {
     throw new Error(
       "There are no budgets, please create a new one and come back"
@@ -15,7 +15,6 @@ const getAllBudgets = async (req, res) => {
 };
 
 const createBudget = async (req, res) => {
-  //Get current/signed in user from firebase
   const {
     body: { name, maxExpending },
   } = req;
@@ -36,7 +35,6 @@ const createBudget = async (req, res) => {
 
 const updateBudget = async (req, res) => {
   const {
-    //Get current/signed in user from firebase
     body: { name, maxExpending, createdBy: currentUser },
     params: { id: budgetId },
   } = req;
@@ -57,15 +55,14 @@ const updateBudget = async (req, res) => {
 };
 
 const deleteBudget = async (req, res) => {
+  const uid = await req.headers.uid;
   const {
-    //Get current/signed in user from firebase
     params: { id: budgetId },
-    body: { createdBy: currentUser },
   } = req;
-  const budget = await Budget.findOneAndDelete(
-    //Get current/signed in user from firebase
-    { _id: budgetId, createdBy: currentUser }
-  );
+  const budget = await Budget.findOneAndDelete({
+    _id: budgetId,
+    createdBy: uid,
+  });
 
   if (!budget) {
     throw new Error(`No budget found with id: ${budgetId}`);
