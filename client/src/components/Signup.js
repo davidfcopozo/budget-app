@@ -1,30 +1,52 @@
 import React, { useRef, useState } from "react";
-import { Form, Card, Button, Alert } from "react-bootstrap";
+import { Form, Card, Button, Alert, Image } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useTheme } from "../contexts/ThemesContext";
+import { ProfileIcon } from "./Icons";
 import PopupSignInMethods from "./PopupSignInMethods";
 
 export const Signup = () => {
+  const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const { signup } = useAuth();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState();
   const navigate = useNavigate();
+  const containerDark = useTheme();
+
+  let avatar = {
+    color: containerDark ? "#000000" : "#ffffff",
+  };
+
+  function handleFileInputChange(e) {
+    const selectedFile = e.target.files[0];
+    console.log(selectedFile);
+    setFile(selectedFile);
+  }
+  function handleImageRemoval() {
+    setFile();
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      //We return here so we can stop executing the signup since there was an error
       return setError("Passwords do not match");
     }
 
     try {
       setError("");
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await signup(
+        emailRef.current.value,
+        passwordRef.current.value,
+        nameRef.current.value,
+        file
+      );
       navigate("/");
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
@@ -49,7 +71,50 @@ export const Signup = () => {
               {error}
             </Alert>
           )}
+          <div className="w-100 d-flex flex-column align-items-center mb-4">
+            {file ? (
+              <Image
+                src={URL.createObjectURL(file)}
+                roundedCircle={true}
+                fluid={true}
+                style={{ height: 100, width: 100 }}
+              />
+            ) : (
+              <ProfileIcon color={avatar.color} w="100" h="100" />
+            )}
+            <label
+              className="mt-2 text-primary"
+              style={{ cursor: "pointer" }}
+              htmlFor="file"
+            >
+              Upload picture
+            </label>
+            {file && (
+              <p
+                onClick={handleImageRemoval}
+                className="text-danger"
+                style={{ fontSize: 14, cursor: "pointer" }}
+              >
+                Remove picture
+              </p>
+            )}
+            <input
+              id="file"
+              type="file"
+              style={{ visibility: "hidden" }}
+              onChange={handleFileInputChange}
+              accept="image/*"
+            />
+          </div>
           <Form onSubmit={handleSubmit}>
+            <Form.Group id="name">
+              <Form.Label>Display Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Display name"
+                ref={nameRef}
+              />
+            </Form.Group>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
               <Form.Control
