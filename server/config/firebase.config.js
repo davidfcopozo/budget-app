@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-const serviceAccountKey = require("./serviceAccountKey.json");
+const serviceAccountKey = require("./etc/secrets/serviceAccountKey.json");
 
 const serviceAccount = {
   type: REACT_APP_TYPE,
