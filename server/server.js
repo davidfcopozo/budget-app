@@ -3,10 +3,11 @@ const app = express();
 const connectDb = require("./db/connect");
 require("dotenv").config();
 const cors = require("cors");
+const allowedOrigins = require("./config/allowedOrigins");
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:8080"],
+    origin: allowedOrigins,
     credentials: true, //access-control-allow-credentials:true
     optionSuccessStatus: 200,
   })
@@ -19,6 +20,7 @@ const expenseRouter = require("./routes/expenses");
 
 //middlewares
 const authJWT = require("./middlewares/authJWT");
+const allowedOrigins = require("./config/allowedOrigins");
 
 app.get("/api", (req, res) => {
   res.send("Hello World");
