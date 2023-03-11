@@ -53,14 +53,14 @@ const updateExpense = async (req, res) => {
 };
 
 const deleteExpense = async (req, res) => {
+  const uid = await req.headers.uid;
   const {
     params: { id: expenseId },
-    body: { createdBy },
   } = req;
 
-  const expense = await Expense.findByIdAndDelete({
+  const expense = await Expense.findOneAndDelete({
     _id: expenseId,
-    createdBy: createdBy,
+    createdBy: uid,
   });
 
   if (!expense) {
