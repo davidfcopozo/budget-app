@@ -10,36 +10,76 @@ import {
   signInWithPopup,
   GithubAuthProvider,
   GoogleAuthProvider,
+  updateProfile,
 } from "firebase/auth";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 import { auth } from "../config/firebase.config";
 
-//Create context
 const AuthContext = React.createContext();
 
-//Function to use the context
 export function useAuth() {
   return useContext(AuthContext);
 }
 
-//Context provider
 function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
 
   function githupSingIn() {
     const githupProvider = new GithubAuthProvider();
-    //Function with firebase method to sign in with Github
     return signInWithPopup(auth, githupProvider);
   }
   function googleSingIn() {
     const googleProvider = new GoogleAuthProvider();
-    //Function with firebase method to sign in with Github
     return signInWithPopup(auth, googleProvider);
   }
 
-  //Function with firebase method to create a user with username and password
-  function signup(email, password) {
-    return createUserWithEmailAndPassword(auth, email, password);
+  async function signup(email, password, name, file) {
+    let fullpath = await file.name;
+    let splitName = fullpath.split("\\");
+    let fileName = splitName[splitName.length - 1];
+
+    const storage = getStorage();
+    const storageRef = ref(storage, "profilePictures/" + fileName);
+    if (file) {
+      await uploadBytes(storageRef, file)
+        .then((snapshot) => {
+          return getDownloadURL(snapshot.ref);
+        })
+        .then((photoURL) => {
+          return createUserWithEmailAndPassword(auth, email, password).then(
+            (userCredential) => {
+              if (!file && name) {
+                return updateProfile(userCredential.user, {
+                  displayName: name,
+                });
+              }
+              if (!name && file) {
+                return updateProfile(userCredential.user, {
+                  photoURL: photoURL,
+                });
+              }
+              return updateProfile(userCredential.user, {
+                displayName: name,
+                photoURL: photoURL,
+              });
+            }
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    return createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        if (name) {
+          return updateProfile(userCredential.user, { displayName: name });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   function login(email, password) {
@@ -58,22 +98,46 @@ function AuthProvider({ children }) {
     return updateEmail(currentUser, email);
   }
 
-  function passwordUpdate(email) {
-    return updatePassword(currentUser, email);
+  function passwordUpdate(password) {
+    return updatePassword(currentUser, password);
   }
 
-  //Run this code only when the component mounts
+  async function profileUpdate(name, file) {
+    let fullpath = await file.name;
+    let splitName = fullpath.split("\\");
+    let filename = splitName[splitName.length - 1];
+
+    const storage = getStorage();
+    const storageRef = ref(storage, "profilePictures/" + filename);
+    await uploadBytes(storageRef, file)
+      .then((snapshot) => {
+        return getDownloadURL(snapshot.ref);
+      })
+      .then((photoURL) => {
+        if (!file && name) {
+          return updateProfile(currentUser, { displayName: name });
+        }
+        if (!name && file) {
+          return updateProfile(currentUser, { photoURL: photoURL });
+        }
+        return updateProfile(currentUser, {
+          displayName: name,
+          photoURL: photoURL,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   useEffect(() => {
-    //Method to store current user in the state variable and unsubscribe it when unmounted
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
     });
-    //Cleanup to unsubscribe
     return unsubscribe;
   }, []);
 
-  //Context value to provide
   const value = {
     currentUser,
     signup,
@@ -84,6 +148,7 @@ function AuthProvider({ children }) {
     passwordUpdate,
     githupSingIn,
     googleSingIn,
+    profileUpdate,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
