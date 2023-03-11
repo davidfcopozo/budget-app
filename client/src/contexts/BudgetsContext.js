@@ -1,29 +1,35 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
+import { auth } from "../config/firebase.config";
 import useDeleteRequest from "../hooks/useDeleteRequest";
 import useFetchRequest from "../hooks/useFetchRequest";
 import usePostRequest from "../hooks/usePostRequest";
 import useUpdateRequest from "../hooks/useUpdateRequest";
 
-// Create a context
 const BudgetsContext = React.createContext();
-//const queryClient = useQueryClient();
 
-// Make and saved in a variable the ID for uncategorized budgets
 export const UNCATEGORIZED_BUDGET = "Uncategorized";
 
-// Create and make the hook exportable
-/* This hook uses the BudgetsContext that enable us to access all of the props wrapped around
-  <BudgetsContext.Provider /> in any component we export it to */
 export function useBudgets() {
   return useContext(BudgetsContext);
 }
 
-/* This function provides all the data we want to pass to <BudgetsContext.Provider /> as prop using 
-childen as parameter, all data insed it, passes to childen so we can use it as value in 
-<BudgetsContext.Provider />*/
 export const BudgetsProvider = ({ children }) => {
   const queryClient = useQueryClient();
+
+  const [budgets, setBudgets] = useState();
+  const [expenses, setExpenses] = useState();
+  const [idToken, setIdToken] = useState("");
+
+  async function getUserIdToken() {
+    await auth?.currentUser
+      ?.getIdToken(/* forceRefresh */ true)
+      .then((token) => setIdToken(token));
+  }
+
+  useEffect(async () => {
+    await getUserIdToken();
+  }, [budgets, expenses, idToken]);
 
   const budgetsQuery = useFetchRequest(
     "budgets",
@@ -34,13 +40,15 @@ export const BudgetsProvider = ({ children }) => {
     "http://localhost:8080/api/expenses"
   );
 
-  const [budgets, setBudgets] = useState();
-  const [expenses, setExpenses] = useState();
-
   function updateValues() {
     setBudgets(budgetsQuery?.data?.budgets);
     setExpenses(expensesQuery?.data?.expenses);
   }
+
+  const { isLoading: budgetsIsLoading, isFetching: budgetsIsFetching } =
+    budgetsQuery;
+  const { isLoading: expensesIsLoading, isFetching: expensesIsFetching } =
+    expensesQuery;
 
   useEffect(() => {
     updateValues();
@@ -48,11 +56,11 @@ export const BudgetsProvider = ({ children }) => {
   useEffect(() => {
     updateValues();
   }, [
-    budgetsQuery.isLoading ||
-      expensesQuery.isLoading ||
-      budgetsQuery.isFetching ||
-      expensesQuery.isFetching,
-    budgets,
+    budgetsIsLoading ||
+      budgetsIsFetching ||
+      expensesIsLoading ||
+      expensesIsFetching ||
+      budgets,
     expenses,
   ]);
 
@@ -92,7 +100,8 @@ export const BudgetsProvider = ({ children }) => {
       // return previousValue here
       // we will use it in the next section
       return { previousBudgets };
-    }
+    },
+    idToken
   );
 
   const postExpenseMutation = usePostRequest(
@@ -132,7 +141,8 @@ export const BudgetsProvider = ({ children }) => {
       // return previousValue here
       // we will use it in the next section
       return { previousExpenses };
-    }
+    },
+    idToken
   );
 
   const deleteExpenseMutation = useDeleteRequest(
@@ -164,26 +174,8 @@ export const BudgetsProvider = ({ children }) => {
           }),
         ]
       );
-    }
-  );
-
-  const updateExpenseMutation = useUpdateRequest(
-    "http://localhost:8080/api/expenses",
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["expenses"]);
-      },
-      onError: () => {
-        const previousExpenses = queryClient.getQueryData(["expenses"]);
-        queryClient.setQueryData(["expenses", previousExpenses]);
-      },
-      onMutate: async (expense) => {
-        await queryClient.cancelQueries(["expenses"]);
-        queryClient.setQueryData(["expenses"], (oldData) => {
-          return [...oldData, expense];
-        });
-      },
-    }
+    },
+    idToken
   );
 
   const deleteBudgetMutation = useDeleteRequest(
@@ -202,11 +194,37 @@ export const BudgetsProvider = ({ children }) => {
       // cancel queries against this query key
       // so that if any other component is consuming this data
       // is not able to get the old data
-      await queryClient.cancelQueries(["expenses"]);
+      await queryClient.cancelQueries(["budgets"]);
       const previousBudgets = queryClient.getQueryData(["budgets"]);
-      queryClient.setQueryData(["budgets"], () => {
-        return previousBudgets.filter((budget) => budget.id !== id);
-      });
+      queryClient.setQueryData(
+        ["budgets"],
+        [
+          previousBudgets?.map((budget) => {
+            return previousBudgets.filter(budget.id !== id);
+          }),
+        ]
+      );
+    },
+    idToken
+  );
+
+  const updateExpenseMutation = useUpdateRequest(
+    "http://localhost:8080/api/expenses",
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["expenses"]);
+      },
+      onError: () => {
+        const previousExpenses = queryClient.getQueryData(["expenses"]);
+        queryClient.setQueryData(["expenses", previousExpenses]);
+      },
+      onMutate: async (expense) => {
+        await queryClient.cancelQueries(["expenses"]);
+        queryClient.setQueryData(["expenses"], (oldData) => {
+          return [...oldData, expense];
+        });
+      },
+      idToken,
     }
   );
 
@@ -228,19 +246,22 @@ export const BudgetsProvider = ({ children }) => {
 
   function deleteBudget(id) {
     const previousExpenses = queryClient.getQueryData(["expenses"]);
-    deleteBudgetMutation.mutate(id);
-    previousExpenses.expenses.map((expense) => {
-      if (expense.budgetId !== id) {
-        return expense;
-      }
-      return updateExpenseMutation.mutate({
-        id: expense._id,
-        data: {
-          ...expense,
-          budgetId: UNCATEGORIZED_BUDGET,
-        },
+    if (previousExpenses) {
+      previousExpenses.expenses.map((expense) => {
+        if (expense.budgetId !== id) {
+          return expense;
+        }
+        return updateExpenseMutation.mutate({
+          id: expense._id,
+          data: {
+            ...expense,
+            budgetId: UNCATEGORIZED_BUDGET,
+          },
+        });
       });
-    });
+      return deleteBudgetMutation.mutate(id);
+    }
+    return deleteBudgetMutation.mutate(id);
   }
 
   return (
@@ -253,6 +274,10 @@ export const BudgetsProvider = ({ children }) => {
         addBudget,
         deleteExpense,
         deleteBudget,
+        budgetsIsLoading,
+        budgetsIsFetching,
+        expensesIsLoading,
+        expensesIsFetching,
       }}
     >
       {children}
