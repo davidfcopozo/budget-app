@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { GithubIcon, GoogleIcon } from "./Icons";
 
 const PopupSignInMethods = () => {
   const [error, setError] = useState();
@@ -46,7 +47,7 @@ const PopupSignInMethods = () => {
         onClick={handleGithupSubmit}
         disabled={loading}
       >
-        <i className="bi bi-github"></i>
+        <GithubIcon />
       </Button>
       <Button
         style={{
@@ -60,7 +61,7 @@ const PopupSignInMethods = () => {
         onClick={handleGoogleSubmit}
         disabled={loading}
       >
-        <i className="bi bi-google"></i>
+        <GoogleIcon />
       </Button>
     </Container>
   );
