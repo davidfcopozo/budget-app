@@ -16,15 +16,16 @@ app.use(express.json());
 //Routes
 const budgetRouter = require("./routes/budgets");
 const expenseRouter = require("./routes/expenses");
-const authRouter = require("./routes/auth");
+
+//middlewares
+const authJWT = require("./middlewares/authJWT");
 
 app.get("/api", (req, res) => {
   res.send("Hello World");
 });
 
-app.use("/api/budgets", budgetRouter);
-app.use("/api/expenses", expenseRouter);
-app.use("/", authRouter);
+app.use("/api/budgets", authJWT, budgetRouter);
+app.use("/api/expenses", authJWT, expenseRouter);
 
 const port = process.env.PORT || 8080;
 
