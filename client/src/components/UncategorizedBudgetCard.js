@@ -3,7 +3,6 @@ import BudgetCard from "./BudgetCard";
 import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
 import { content } from "../components/Languages";
-import useFetchRequest from "../hooks/useFetchRequest";
 
 export default function UncategorizedBudgetCard({ ...props }) {
   const lang = useDynamicLang();
@@ -14,8 +13,6 @@ export default function UncategorizedBudgetCard({ ...props }) {
     (total, expense) => total + expense?.amount,
     0
   );
-
-  //console.log(amount);
 
   if (amount === 0) return null;
 
