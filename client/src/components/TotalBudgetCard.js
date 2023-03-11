@@ -1,9 +1,5 @@
 import BudgetCard from "./BudgetCard";
 import { useBudgets } from "../contexts/BudgetsContext";
-import Footprint from "./Footprint";
-import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
-import useFetchRequest from "../hooks/useFetchRequest";
 
 export default function TotalBudgetCard() {
   const { expenses, budgets } = useBudgets();
@@ -16,8 +12,6 @@ export default function TotalBudgetCard() {
     (total, budget) => total + budget.maxExpending,
     0
   );
-
-  //console.log(amount, max);
 
   if (max === 0) return null;
 
