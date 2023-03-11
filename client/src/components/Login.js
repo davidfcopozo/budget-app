@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 import PopupSignInMethods from "./PopupSignInMethods";
 
 export const Login = () => {
+  const { REACT_APP_DUMMY_EMAIL, REACT_APP_DUMMY_PASSWORD } = process.env;
   const emailRef = useRef();
   const passwordRef = useRef();
   const { login } = useAuth();
@@ -60,12 +61,27 @@ export const Login = () => {
               <Form.Label>Password</Form.Label>
               <Form.Control type="password" ref={passwordRef} required />
             </Form.Group>
-            <Container className="d-flex justify-content-center w-100">
-              <Button type="submit" className=" w-90  mt-2" disabled={loading}>
+            <Container className="d-flex flex-column align-items-center w-100">
+              <Button type="submit" className=" w-50  mt-2" disabled={loading}>
                 Sign In
               </Button>
             </Container>
           </Form>
+          <Container className="d-flex flex-column align-items-center w-100 mt-4">
+            <p>Want to take a peep? Try the:</p>
+            <Button
+              type="submit"
+              variant="success"
+              className="d-block justify-self-center w-50 mx-auto"
+              onClick={() => {
+                login(REACT_APP_DUMMY_EMAIL, REACT_APP_DUMMY_PASSWORD);
+                navigate("/");
+              }}
+              disabled={loading}
+            >
+              Dummy account
+            </Button>
+          </Container>
           <div className="w-100 text-center mt-2">
             Or sign in with:
             <PopupSignInMethods />
