@@ -2,7 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const admin = require("../config/firebase.config");
 
 const authJWT = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const authHeader = await req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     throw new Error("Authentication invalid");
