@@ -21,19 +21,18 @@ const expenseRouter = require("./routes/expenses");
 const authJWT = require("./middlewares/authJWT");
 
 app.get("/api", (req, res) => {
-  res.send("Hello World");
+  res.send("Budget Buddy API");
 });
 
 app.use("/api/budgets", authJWT, budgetRouter);
 app.use("/api/expenses", authJWT, expenseRouter);
 
 const port = process.env.PORT || 8080;
+const uri = process.env.MONGO_URI;
 
 const start = async () => {
-  await connectDb(process.env.MONGO_URI);
-  app.listen(port, (req, res) => {
-    console.log(`Server is listening on port ${port}...`);
-  });
+  await connectDb(uri);
+  app.listen(port, (req, res) => {});
 };
 
 start();
