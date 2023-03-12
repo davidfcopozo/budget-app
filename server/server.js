@@ -30,7 +30,7 @@ app.use("/api/expenses", authJWT, expenseRouter);
 const port = process.env.PORT || 8080;
 
 const start = async () => {
-  await connectDb(JSON.stringify(process.env.MONGO_URI));
+  await connectDb(process.env.MONGO_URI);
   app.listen(port, (req, res) => {
     console.log(`Server is listening on port ${port}...`);
   });
