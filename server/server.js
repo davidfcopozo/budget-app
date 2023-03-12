@@ -19,7 +19,6 @@ const expenseRouter = require("./routes/expenses");
 
 //middlewares
 const authJWT = require("./middlewares/authJWT");
-const allowedOrigins = require("./config/allowedOrigins");
 
 app.get("/api", (req, res) => {
   res.send("Hello World");
