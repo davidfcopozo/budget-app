@@ -22,6 +22,7 @@ function useDeleteRequest(url, onSuccess, onError, onMutate, idToken) {
         headers: {
           uid: `${currentUserId}`,
           Authorization: `Bearer ${idToken}`,
+          "Access-Control-Allow-Origin": "*",
         },
       });
       return response;

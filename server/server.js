@@ -4,13 +4,6 @@ const connectDb = require("./db/connect");
 require("dotenv").config();
 const cors = require("cors");
 
-app.use(
-  cors({
-    origin: ["https://budget-buddy-backend.onrender.com"],
-    credentials: true, //access-control-allow-credentials:true
-    optionSuccessStatus: 200,
-  })
-);
 app.use(express.json());
 
 //Routes
@@ -26,6 +19,13 @@ app.get("/api", (req, res) => {
 
 app.use("/api/budgets", authJWT, budgetRouter);
 app.use("/api/expenses", authJWT, expenseRouter);
+app.use(
+  cors({
+    origin: ["https://budget-buddy-d0db6.web.app/", "http://localhost:3000"],
+    credentials: true, //access-control-allow-credentials:true
+    optionSuccessStatus: 200,
+  })
+);
 
 const port = process.env.PORT || 8080;
 const uri = process.env.MONGO_URI;

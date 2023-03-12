@@ -29,6 +29,7 @@ function useFetchRequest(key, url) {
           headers: {
             uid: `${currentUserId}`,
             Authorization: `Bearer ${idToken}`,
+            "Access-Control-Allow-Origin": "*",
           },
         });
         return response.data;
