@@ -2,7 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const admin = require("../config/firebase.config");
 
 const authJWT = async (req, res, next) => {
-  const authHeader = await req.headers.authorization;
+  const authHeader = await req.headers["Authorization"];
 
   try {
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
