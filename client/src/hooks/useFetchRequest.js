@@ -10,16 +10,16 @@ function useFetchRequest(key, url) {
   const [idToken, setIdToken] = useState("");
   const [currentUserId, setCurrentUserId] = useState("");
 
-  useEffect(async () => {
-    getUserId();
-  }, [key, url, currentUser, idToken]);
-
   async function getUserId() {
     setCurrentUserId(await currentUser?.uid);
     await auth?.currentUser
       ?.getIdToken(/* forceRefresh */ true)
       .then((token) => setIdToken(token));
   }
+
+  useEffect(async () => {
+    getUserId();
+  }, [key, url, currentUser, idToken]);
 
   const { data, error, isLoading, isFetching, refetch } = useQuery(
     {
@@ -29,7 +29,6 @@ function useFetchRequest(key, url) {
           headers: {
             uid: `${currentUserId}`,
             Authorization: `Bearer ${idToken}`,
-            "Access-Control-Allow-Origin": "*",
           },
         });
         return response.data;

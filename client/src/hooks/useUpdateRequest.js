@@ -7,7 +7,6 @@ function useUpdateRequest(url, { onSuccess, onError, onMutate, idToken }) {
       const response = await axios.put(`${url}/${id}`, data, {
         headers: {
           Authorization: `Bearer ${idToken}`,
-          "Access-Control-Allow-Origin": "*",
         },
       });
       return response;

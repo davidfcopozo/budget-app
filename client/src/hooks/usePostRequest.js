@@ -9,7 +9,6 @@ function usePostRequest(url, onSuccess, onError, onMutate, idToken) {
       const response = await axios.post(url, body, {
         headers: {
           Authorization: `Bearer ${idToken}`,
-          "Access-Control-Allow-Origin": "*",
         },
       });
       return response.data;

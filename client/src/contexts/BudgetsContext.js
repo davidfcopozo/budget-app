@@ -16,7 +16,8 @@ export function useBudgets() {
 
 export const BudgetsProvider = ({ children }) => {
   const queryClient = useQueryClient();
-  const baseURL = "https://budget-buddy-backend.onrender.com/api";
+  const baseURL = "https://budget-buddy-backend.onrender.com";
+  const devBaseURL = "http://localhost:8080";
 
   const [budgets, setBudgets] = useState();
   const [expenses, setExpenses] = useState();
@@ -32,8 +33,8 @@ export const BudgetsProvider = ({ children }) => {
     await getUserIdToken();
   }, [budgets, expenses, idToken]);
 
-  const budgetsQuery = useFetchRequest("budgets", `${baseURL}/budgets`);
-  const expensesQuery = useFetchRequest("expenses", `${baseURL}/expenses`);
+  const budgetsQuery = useFetchRequest("budgets", `${baseURL}/api/budgets`);
+  const expensesQuery = useFetchRequest("expenses", `${baseURL}/api/expenses`);
 
   function updateValues() {
     setBudgets(budgetsQuery?.data?.budgets);
@@ -60,7 +61,7 @@ export const BudgetsProvider = ({ children }) => {
   ]);
 
   const postBudgetMutation = usePostRequest(
-    `${baseURL}/budgets`,
+    `${baseURL}/api/budgets`,
     function onSuccess() {
       queryClient.invalidateQueries(["budgets"]);
     },
@@ -100,7 +101,7 @@ export const BudgetsProvider = ({ children }) => {
   );
 
   const postExpenseMutation = usePostRequest(
-    `${baseURL}/expenses`,
+    `${baseURL}/api/expenses`,
     function onSuccess() {
       queryClient.invalidateQueries(["expenses"]);
     },
@@ -141,7 +142,7 @@ export const BudgetsProvider = ({ children }) => {
   );
 
   const deleteExpenseMutation = useDeleteRequest(
-    `${baseURL}/expenses`,
+    `${baseURL}/api/expenses`,
     function onSuccess() {
       queryClient.invalidateQueries(["expenses"]);
     },
@@ -174,7 +175,7 @@ export const BudgetsProvider = ({ children }) => {
   );
 
   const deleteBudgetMutation = useDeleteRequest(
-    `${baseURL}/budgets`,
+    `${baseURL}/api/budgets`,
     function onSuccess() {
       queryClient.invalidateQueries(["budgets"]);
     },
@@ -203,7 +204,7 @@ export const BudgetsProvider = ({ children }) => {
     idToken
   );
 
-  const updateExpenseMutation = useUpdateRequest(`${baseURL}/expenses`, {
+  const updateExpenseMutation = useUpdateRequest(`${baseURL}/api/expenses`, {
     onSuccess: () => {
       queryClient.invalidateQueries(["expenses"]);
     },
