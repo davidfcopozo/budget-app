@@ -15,7 +15,7 @@ const Footprint = () => {
     marginTop: "unset",
     marginBottom: "unset",
     borderTop: "1px solid gray",
-    width: "100vh",
+    width: "100%",
     marginInline: "auto",
     paddingTop: "1rem",
   };
