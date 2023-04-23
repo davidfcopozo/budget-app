@@ -137,6 +137,9 @@ function AuthProvider({ children }) {
     });
     return unsubscribe;
   }, []);
+  useEffect(() => {
+    console.log(currentUser);
+  }, [currentUser]);
 
   const value = {
     currentUser,

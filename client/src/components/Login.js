@@ -73,8 +73,8 @@ export const Login = () => {
               type="submit"
               variant="success"
               className="d-block justify-self-center w-50 mx-auto"
-              onClick={() => {
-                login(REACT_APP_DUMMY_EMAIL, REACT_APP_DUMMY_PASSWORD);
+              onClick={async () => {
+                await login(REACT_APP_DUMMY_EMAIL, REACT_APP_DUMMY_PASSWORD);
                 navigate("/");
               }}
               disabled={loading}
