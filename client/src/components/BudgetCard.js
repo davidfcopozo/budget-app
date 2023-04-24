@@ -3,6 +3,7 @@ import React from "react";
 import { currencyFormatter } from "../utils";
 import { content } from "./Languages";
 import { useDynamicLang } from "../contexts/LanguageContext";
+import { EditIcon } from "./Icons";
 
 export default function BudgetCard({
   name,
@@ -12,6 +13,8 @@ export default function BudgetCard({
   onAddExpenseClick,
   hideButtons,
   onViewExpenseClick,
+  setShowEditBudgetModal,
+  onViewBudgetClick,
 }) {
   const lang = useDynamicLang();
 
@@ -27,13 +30,24 @@ export default function BudgetCard({
       <Card.Body>
         <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal">
           <div className="me-2">{name}</div>
-          <div className="d-flex align-items-baseline">
+          <div className="d-flex align-items-baseline gap-1">
             {currencyFormatter.format(amount)}
             {maxExpending && (
               <span className="text-muted fs-6">
                 / {currencyFormatter.format(maxExpending)}
               </span>
             )}
+            <button
+              className="ms-auto btn py-0 justify-content-center"
+              aria-label="Edit budget"
+              title="Edit budget"
+              onClick={() => {
+                setShowEditBudgetModal(true);
+                onViewBudgetClick();
+              }}
+            >
+              <EditIcon width="13px" height="13px" />
+            </button>
           </div>
         </Card.Title>
         {maxExpending && (
