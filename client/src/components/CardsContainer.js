@@ -8,6 +8,8 @@ const CardsContainer = ({
   budgets,
   openAddExpenseModal,
   setViewExpensesModalBudgetId,
+  setShowEditBudgetModal,
+  setViewBudgetEditModal,
 }) => {
   const {
     getBudgetExpenses,
@@ -51,6 +53,8 @@ const CardsContainer = ({
               onViewExpenseClick={() =>
                 setViewExpensesModalBudgetId(budget._id)
               }
+              setShowEditBudgetModal={setShowEditBudgetModal}
+              onViewBudgetClick={() => setViewBudgetEditModal(budget._id)}
             />
           );
         })}
