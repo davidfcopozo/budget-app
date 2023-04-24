@@ -229,8 +229,6 @@ export const BudgetsProvider = ({ children }) => {
       queryClient.setQueryData(["budgets", previousBudgets]);
     },
     onMutate: async ({ budgetId, budget }) => {
-      console.log(budgetId);
-
       await queryClient.cancelQueries(["budgets"]);
       queryClient.setQueryData(["budgets"], (oldData) => {
         return [...oldData, budget];
@@ -251,8 +249,8 @@ export const BudgetsProvider = ({ children }) => {
     const { name, maxExpending, createdBy, id } = data;
     let budgetId = id;
     const budget = { name, maxExpending, createdBy };
-    console.log(budget);
-    return updateBudgetMutation.mutate({ budgetId, budget });
+
+    return updateBudgetMutation.mutate({ id: budgetId, data: budget });
   }
 
   function addExpense(expense) {
