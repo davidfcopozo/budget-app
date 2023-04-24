@@ -12,11 +12,14 @@ import Footprint from "./Footprint";
 import NavBar from "./NavBar";
 import LoadingScreen from "./LoadingScreen";
 import CardsContainer from "./CardsContainer";
+import EditBudgetModal from "./EditBudgetModal";
 
 function Dashboard() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
+  const [showEditBudgetModal, setShowEditBudgetModal] = useState(false);
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
   const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState();
+  const [viewBudgetEditModal, setViewBudgetEditModal] = useState();
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState();
   const [screenSize, setScreenSize] = useState();
   const [responsive, setResponsive] = useState(
@@ -118,12 +121,19 @@ function Dashboard() {
             budgets={budgets}
             openAddExpenseModal={openAddExpenseModal}
             setViewExpensesModalBudgetId={setViewExpensesModalBudgetId}
+            setShowEditBudgetModal={setShowEditBudgetModal}
+            setViewBudgetEditModal={setViewBudgetEditModal}
           />
         )}
 
         <AddBudgetModal
           show={showAddBudgetModal}
           handleClose={() => setShowAddBudgetModal(false)}
+        />
+        <EditBudgetModal
+          show={showEditBudgetModal}
+          handleClose={() => setShowEditBudgetModal(false)}
+          budgetId={viewBudgetEditModal}
         />
 
         <AddExpenseModal
