@@ -21,6 +21,7 @@ export default function UncategorizedBudgetCard({ ...props }) {
       amount={amount}
       name={content[lang]["titles"]["uncategorized"]}
       gray
+      editable
       {...props}
     />
   );
