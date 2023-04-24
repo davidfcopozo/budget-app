@@ -15,6 +15,7 @@ export default function BudgetCard({
   onViewExpenseClick,
   setShowEditBudgetModal,
   onViewBudgetClick,
+  editable,
 }) {
   const lang = useDynamicLang();
 
@@ -37,17 +38,19 @@ export default function BudgetCard({
                 / {currencyFormatter.format(maxExpending)}
               </span>
             )}
-            <button
-              className="ms-auto btn py-0 justify-content-center"
-              aria-label="Edit budget"
-              title="Edit budget"
-              onClick={() => {
-                setShowEditBudgetModal(true);
-                onViewBudgetClick();
-              }}
-            >
-              <EditIcon width="13px" height="13px" />
-            </button>
+            {!editable && (
+              <button
+                className="ms-auto btn py-0 justify-content-center"
+                aria-label="Edit budget"
+                title="Edit budget"
+                onClick={() => {
+                  setShowEditBudgetModal(true);
+                  onViewBudgetClick();
+                }}
+              >
+                <EditIcon width="13px" height="13px" />
+              </button>
+            )}
           </div>
         </Card.Title>
         {maxExpending && (
