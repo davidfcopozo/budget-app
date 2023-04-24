@@ -2,8 +2,11 @@ export const content = {
   english: {
     buttons: {
       addBudget: "Add Budget",
+      editBudget: "Edit Budget",
       addExpense: "Add Expense",
+      editExpense: "Edit Expense",
       addButton: "Add",
+      editButton: "Edit",
       deleteButton: "Delete",
       viewExpensesButton: "View Expenses",
     },
@@ -33,8 +36,11 @@ export const content = {
   spanish: {
     buttons: {
       addBudget: "Agregar Presupuesto",
+      editBudget: "Editar Presupuesto",
       addExpense: "Agregar Gasto",
+      editExpense: "Editar Gasto",
       addButton: "Agregar",
+      editButton: "Editar",
       deleteButton: "Eliminar",
       viewExpensesButton: "Ver Gastos",
     },
