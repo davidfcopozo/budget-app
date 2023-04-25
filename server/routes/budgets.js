@@ -8,6 +8,6 @@ const {
 const router = express.Router();
 
 router.route("/").post(createBudget).get(getAllBudgets);
-router.route("/:id").put(updateBudget).delete(deleteBudget);
+router.route("/:id").patch(updateBudget).delete(deleteBudget);
 
 module.exports = router;

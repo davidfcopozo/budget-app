@@ -23,6 +23,7 @@ export default function TotalBudgetCard() {
         gray
         maxExpending={max}
         hideButtons
+        editable
       />
     </>
   );

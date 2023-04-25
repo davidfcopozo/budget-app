@@ -36,7 +36,7 @@ export const UpdateProfile = () => {
 
     if (currentUser.uid === dummyUser) {
       return setError(
-        "Sorry, this is a dummy account, please create an account to be able to customize it.e"
+        "Sorry, this is a dummy account, please create your own one to be able to customize it."
       );
     }
 

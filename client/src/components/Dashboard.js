@@ -12,12 +12,19 @@ import Footprint from "./Footprint";
 import NavBar from "./NavBar";
 import LoadingScreen from "./LoadingScreen";
 import CardsContainer from "./CardsContainer";
+import EditBudgetModal from "./EditBudgetModal";
+import EditExpenseModal from "./EditExpenseModal";
 
 function Dashboard() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
+  const [showEditBudgetModal, setShowEditBudgetModal] = useState(false);
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
   const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState();
+  const [showEditExpenseModal, setShowEditExpenseModal] = useState(false);
+  const [viewBudgetEditModal, setViewBudgetEditModal] = useState();
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState();
+  const [defaultBudgetId, setDefaultBudgetId] = useState();
+  const [viewExpenseId, setViewExpenseId] = useState();
   const [screenSize, setScreenSize] = useState();
   const [responsive, setResponsive] = useState(
     window.matchMedia("(max-width: 767px)").matches ? "vertical" : "horizontal"
@@ -118,12 +125,19 @@ function Dashboard() {
             budgets={budgets}
             openAddExpenseModal={openAddExpenseModal}
             setViewExpensesModalBudgetId={setViewExpensesModalBudgetId}
+            setShowEditBudgetModal={setShowEditBudgetModal}
+            setViewBudgetEditModal={setViewBudgetEditModal}
           />
         )}
 
         <AddBudgetModal
           show={showAddBudgetModal}
           handleClose={() => setShowAddBudgetModal(false)}
+        />
+        <EditBudgetModal
+          show={showEditBudgetModal}
+          handleClose={() => setShowEditBudgetModal(false)}
+          budgetId={viewBudgetEditModal}
         />
 
         <AddExpenseModal
@@ -132,9 +146,19 @@ function Dashboard() {
           handleClose={() => setShowAddExpenseModal(false)}
         />
 
+        <EditExpenseModal
+          show={showEditExpenseModal}
+          handleClose={() => setShowEditExpenseModal(false)}
+          defaultBudgetId={defaultBudgetId}
+          expenseId={viewExpenseId}
+        />
+
         <ViewExpensesModal
           budgetId={viewExpensesModalBudgetId}
           handleClose={() => setViewExpensesModalBudgetId()}
+          setViewExpenseId={setViewExpenseId}
+          setShowEditExpenseModal={setShowEditExpenseModal}
+          setDefaultBudgetId={setDefaultBudgetId}
         />
       </Container>
       <Footprint />

@@ -49,6 +49,7 @@ export const BudgetsProvider = ({ children }) => {
   useEffect(() => {
     updateValues();
   }, []);
+
   useEffect(() => {
     updateValues();
   }, [
@@ -212,10 +213,27 @@ export const BudgetsProvider = ({ children }) => {
       const previousExpenses = queryClient.getQueryData(["expenses"]);
       queryClient.setQueryData(["expenses", previousExpenses]);
     },
-    onMutate: async (expense) => {
+    onMutate: async ({ expenseId, expense }) => {
       await queryClient.cancelQueries(["expenses"]);
       queryClient.setQueryData(["expenses"], (oldData) => {
         return [...oldData, expense];
+      });
+    },
+    idToken,
+  });
+
+  const updateBudgetMutation = useUpdateRequest(`${baseURL}/api/budgets`, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["budgets"]);
+    },
+    onError: () => {
+      const previousBudgets = queryClient.getQueryData(["budgets"]);
+      queryClient.setQueryData(["budgets", previousBudgets]);
+    },
+    onMutate: async ({ budgetId, budget }) => {
+      await queryClient.cancelQueries(["budgets"]);
+      queryClient.setQueryData(["budgets"], (oldData) => {
+        return [...oldData, budget];
       });
     },
     idToken,
@@ -229,8 +247,24 @@ export const BudgetsProvider = ({ children }) => {
     return postBudgetMutation.mutate(budget);
   }
 
+  function editBudget(data) {
+    const { name, maxExpending, createdBy, id } = data;
+    let budgetId = id;
+    const budget = { name, maxExpending, createdBy };
+
+    return updateBudgetMutation.mutate({ id: budgetId, data: budget });
+  }
+
   function addExpense(expense) {
     return postExpenseMutation.mutate(expense);
+  }
+
+  function editExpense(data) {
+    const { description, amount, createdBy, id, budgetId } = data;
+    let expenseId = id;
+    const expense = { description, amount, budgetId, createdBy };
+
+    return updateExpenseMutation.mutate({ id: expenseId, data: expense });
   }
 
   async function deleteExpense(id) {
@@ -264,7 +298,9 @@ export const BudgetsProvider = ({ children }) => {
         expenses,
         getBudgetExpenses,
         addExpense,
+        editExpense,
         addBudget,
+        editBudget,
         deleteExpense,
         deleteBudget,
         budgetsIsLoading,
