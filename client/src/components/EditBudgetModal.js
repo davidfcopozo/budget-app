@@ -33,7 +33,7 @@ export default function EditBudgetModal({ show, handleClose, budgetId }) {
     <Modal show={show} onHide={handleClose}>
       <Form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
-          <Modal.Title>{content[lang]["titles"]["budgets"]}</Modal.Title>
+          <Modal.Title>{content[lang]["titles"]["editBudget"]}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group className="mb-3" controlId="name">
