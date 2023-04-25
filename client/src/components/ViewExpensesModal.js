@@ -2,10 +2,16 @@ import { Button, Modal, Stack } from "react-bootstrap";
 import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
 import { currencyFormatter } from "../utils";
-import { XIcon } from "./Icons";
+import { EditIcon, XIcon } from "./Icons";
 import { content } from "./Languages";
 
-export default function ViewExpensesModal({ budgetId, handleClose }) {
+export default function ViewExpensesModal({
+  budgetId,
+  handleClose,
+  setViewExpenseId,
+  setShowEditExpenseModal,
+  setDefaultBudgetId,
+}) {
   const lang = useDynamicLang();
 
   const { getBudgetExpenses, budgets, deleteBudget, deleteExpense } =
@@ -48,6 +54,23 @@ export default function ViewExpensesModal({ budgetId, handleClose }) {
               <div className="fs-5">
                 {currencyFormatter.format(expense?.amount)}
               </div>
+              <Button
+                size="sm"
+                variant="outline-success"
+                onClick={async () => {
+                  setDefaultBudgetId(expense?.budgetId);
+                  setShowEditExpenseModal(true);
+                  handleClose();
+                  setViewExpenseId(expense?._id);
+                }}
+                disabled={expenses.isLoading}
+              >
+                {expenses.isFetching ? (
+                  "Loading"
+                ) : (
+                  <EditIcon width="12px" height="12px" />
+                )}
+              </Button>
               <Button
                 size="sm"
                 variant="outline-danger"
