@@ -3,8 +3,6 @@ import { useRef } from "react";
 import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
 import { content } from "../components/Languages";
-import { useQueryClient } from "react-query";
-import usePostRequest from "../hooks/usePostRequest";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function AddExpenseModal({
@@ -71,7 +69,7 @@ export default function AddExpenseModal({
           </Form.Group>
           <div className="d-flex justify-content-end">
             <Button variant="primary" type="submit">
-              Add
+              {content[lang]["buttons"]["addButton"]}
             </Button>
           </div>
         </Modal.Body>
