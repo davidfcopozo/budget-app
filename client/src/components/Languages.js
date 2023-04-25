@@ -13,7 +13,9 @@ export const content = {
     titles: {
       budgets: "Budgets",
       newBudget: "New Budget",
+      editBudget: "Edit Budget",
       newExpense: "New Expense",
+      editExpense: "Edit Expense",
       viewExpensesTitle: "Expenses",
       uncategorized: "Uncategorized",
     },
@@ -46,8 +48,10 @@ export const content = {
     },
     titles: {
       budgets: "Presupuestos",
+      editBudget: "Editar Presupuesto",
       newBudget: "Nuevo Presupuesto",
       newExpense: "Nuevo Gasto",
+      editExpense: "Editar Gasto",
       viewExpensesTitle: "Gastos",
       uncategorized: "Sin Categorizar",
     },
