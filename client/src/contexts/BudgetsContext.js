@@ -28,6 +28,7 @@ export const BudgetsProvider = ({ children }) => {
       ?.getIdToken(/* forceRefresh */ true)
       .then((token) => setIdToken(token));
   }
+
   useEffect(async () => {
     await getUserIdToken();
   }, [budgets, expenses, idToken]);
@@ -48,6 +49,7 @@ export const BudgetsProvider = ({ children }) => {
   useEffect(() => {
     updateValues();
   }, []);
+
   useEffect(() => {
     updateValues();
   }, [
@@ -211,7 +213,7 @@ export const BudgetsProvider = ({ children }) => {
       const previousExpenses = queryClient.getQueryData(["expenses"]);
       queryClient.setQueryData(["expenses", previousExpenses]);
     },
-    onMutate: async (expense) => {
+    onMutate: async ({ expenseId, expense }) => {
       await queryClient.cancelQueries(["expenses"]);
       queryClient.setQueryData(["expenses"], (oldData) => {
         return [...oldData, expense];
@@ -220,7 +222,7 @@ export const BudgetsProvider = ({ children }) => {
     idToken,
   });
 
-  const updateBudgetMutation = useUpdateRequest(`${devBaseURL}/api/budgets`, {
+  const updateBudgetMutation = useUpdateRequest(`${baseURL}/api/budgets`, {
     onSuccess: () => {
       queryClient.invalidateQueries(["budgets"]);
     },
@@ -257,6 +259,14 @@ export const BudgetsProvider = ({ children }) => {
     return postExpenseMutation.mutate(expense);
   }
 
+  function editExpense(data) {
+    const { description, amount, createdBy, id, budgetId } = data;
+    let expenseId = id;
+    const expense = { description, amount, budgetId, createdBy };
+
+    return updateExpenseMutation.mutate({ id: expenseId, data: expense });
+  }
+
   async function deleteExpense(id) {
     return deleteExpenseMutation.mutate(id);
   }
@@ -288,6 +298,7 @@ export const BudgetsProvider = ({ children }) => {
         expenses,
         getBudgetExpenses,
         addExpense,
+        editExpense,
         addBudget,
         editBudget,
         deleteExpense,
