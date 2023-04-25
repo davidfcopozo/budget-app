@@ -8,6 +8,6 @@ const {
 } = require("../controllers/expense");
 
 router.route("/").get(getAllExpenses).post(createExpense);
-router.route("/:id").put(updateExpense).delete(deleteExpense);
+router.route("/:id").patch(updateExpense).delete(deleteExpense);
 
 module.exports = router;
