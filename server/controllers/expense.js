@@ -27,15 +27,19 @@ const createExpense = async (req, res) => {
 
 const updateExpense = async (req, res) => {
   const {
-    body: { description, amount, createdBy },
+    body: { description, amount, budgetId, createdBy },
     params: { id },
   } = req;
+
+  if (budgetId === "") {
+    throw new Error("Please select the the budget this expense belongs to");
+  }
 
   if (description === "" && amount === "") {
     throw new Error("Please provide the data  to be updated");
   }
 
-  if (amount <= 0) {
+  if (amount <= 0 || amount === "") {
     throw new Error("The amount must be greater than 0");
   }
 
