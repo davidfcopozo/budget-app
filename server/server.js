@@ -16,6 +16,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 /* app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -32,8 +33,6 @@ const expenseRouter = require("./routes/expenses");
 
 //middlewares
 const authJWT = require("./middlewares/authJWT");
-
-/* app.options("*", cors()); */
 
 app.get("/api", (req, res) => {
   res.send("Budget Buddy API");
