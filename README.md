@@ -65,6 +65,9 @@ Front-end Personal Budget Manager built out of a YouTube that I turned into a CR
 
 ### Frontend
 
+**Note:**<br/>
+The frontend env variables must be in an **.env.local** file instead of .env when hosted on Firebase.
+
 ```sh
 - REACT_APP_FIREBASE_API_KEY
 - REACT_APP_FIREBASE_AUTH_DOMAIN
