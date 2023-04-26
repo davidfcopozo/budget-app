@@ -13,20 +13,11 @@ const corsOptions = {
   ],
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
+  methods: "*",
 };
 
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
-
-/* app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-}); */
-
 //Routes
 const budgetRouter = require("./routes/budgets");
 const expenseRouter = require("./routes/expenses");
