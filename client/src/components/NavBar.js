@@ -1,7 +1,7 @@
 import { Image, Navbar, OverlayTrigger, Stack, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemesContext";
-import { ProfileIcon } from "./Icons";
+import { ProfileIcon } from "./icons/Icons";
 import { LanguageSelect } from "./LanguageSelect";
 import ThemeButton from "./ThemeButton";
 import { useAuth } from "../contexts/AuthContext";

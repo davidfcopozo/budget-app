@@ -3,8 +3,8 @@ import { Form, Card, Button, Alert, Image } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemesContext";
-import { ProfileIcon } from "./Icons";
-import PopupSignInMethods from "./PopupSignInMethods";
+import PopupSignInMethods from "../components/PopupSignInMethods";
+import { ProfileIcon } from "../components/icons/Icons";
 
 export const Signup = () => {
   const nameRef = useRef();

@@ -9,6 +9,7 @@ export const content = {
       editButton: "Edit",
       deleteButton: "Delete",
       viewExpensesButton: "View Expenses",
+      deleteBudget: "Delete Budget",
     },
     titles: {
       budgets: "Budgets",
@@ -29,6 +30,10 @@ export const content = {
       amount: "Amount",
       budget: "Budget",
     },
+    confirmationMessages: {
+      budgetDeletion:
+        'Are you sure you want to delete this budget? \n\nBy doing this all the expenses associated with it will be moved to the "Uncategorized" budget.',
+    },
     footprint: {
       built: "Built by",
       with: "with ☕",
@@ -45,6 +50,7 @@ export const content = {
       editButton: "Editar",
       deleteButton: "Eliminar",
       viewExpensesButton: "Ver Gastos",
+      deleteBudget: "Borrar Presupuesto",
     },
     titles: {
       budgets: "Presupuestos",
@@ -64,6 +70,10 @@ export const content = {
       maximunSpending: "Gasto Máximo",
       amount: "Cantidad",
       budget: "Presupuesto",
+    },
+    confirmationMessages: {
+      budgetDeletion:
+        '¿Estas segur@ que quieres borrar este presupuesto? \n\nAl hacerlo, todos los gastos asociados con este serán reasignados al presupuesto "Sin categorizar".',
     },
     footprint: {
       built: "Desarrollado por",

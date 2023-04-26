@@ -1,19 +1,19 @@
 import { useLayoutEffect, useState } from "react";
 import { Button, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
-import AddBudgetModal from "./AddBudgetModal";
-import AddExpenseModal from "./AddExpenseModal";
+import AddBudgetModal from "../components/AddBudgetModal";
+import AddExpenseModal from "../components/AddExpenseModal";
 import { useBudgets } from "../contexts/BudgetsContext";
-import ViewExpensesModal from "./ViewExpensesModal";
+import ViewExpensesModal from "../components/ViewExpensesModal";
 import { useTheme } from "../contexts/ThemesContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
-import { content } from "./Languages";
-import Footprint from "./Footprint";
-import NavBar from "./NavBar";
-import LoadingScreen from "./LoadingScreen";
-import CardsContainer from "./CardsContainer";
-import EditBudgetModal from "./EditBudgetModal";
-import EditExpenseModal from "./EditExpenseModal";
+import { content } from "../data/Languages";
+import Footprint from "../components/Footprint";
+import NavBar from "../components/NavBar";
+import LoadingScreen from "../components/LoadingScreen";
+import CardsContainer from "../components/CardsContainer";
+import EditBudgetModal from "../components/EditBudgetModal";
+import EditExpenseModal from "../components/EditExpenseModal";
 
 function Dashboard() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);

@@ -1,9 +1,9 @@
 import { Button, Card, ProgressBar, Stack } from "react-bootstrap";
 import React from "react";
 import { currencyFormatter } from "../utils";
-import { content } from "./Languages";
+import { content } from "../data/Languages";
 import { useDynamicLang } from "../contexts/LanguageContext";
-import { EditIcon } from "./Icons";
+import { EditIcon } from "./icons/Icons";
 
 export default function BudgetCard({
   name,
@@ -29,9 +29,9 @@ export default function BudgetCard({
   return (
     <Card className={`${classNames.join(" ")}  mb-3`}>
       <Card.Body>
-        <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal">
+        <Card.Title className="d-flex justify-content-between align-items-center fw-normal">
           <div className="me-2">{name}</div>
-          <div className="d-flex align-items-baseline gap-1">
+          <div className="d-flex align-items-center gap-1">
             {currencyFormatter.format(amount)}
             {maxExpending && (
               <span className="text-muted fs-6">
@@ -48,7 +48,7 @@ export default function BudgetCard({
                   onViewBudgetClick();
                 }}
               >
-                <EditIcon width="13px" height="13px" />
+                <EditIcon width="14px" height="14px" />
               </button>
             )}
           </div>

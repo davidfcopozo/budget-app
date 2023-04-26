@@ -2,8 +2,8 @@ import { Button, Modal, Stack } from "react-bootstrap";
 import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
 import { currencyFormatter } from "../utils";
-import { EditIcon, XIcon } from "./Icons";
-import { content } from "./Languages";
+import { EditIcon, XIcon } from "./icons/Icons";
+import { content } from "../data/Languages";
 
 export default function ViewExpensesModal({
   budgetId,
@@ -24,20 +24,31 @@ export default function ViewExpensesModal({
 
   const expenses = getBudgetExpenses(budgetId);
 
+  const handleConfirmation = async (e) => {
+    const isConfirmed = window.confirm(
+      content[lang]["confirmationMessages"]["budgetDeletion"]
+    );
+    if (isConfirmed) {
+      await deleteBudget(budget?._id);
+      return handleClose();
+    }
+    return isConfirmed;
+  };
+
   return (
     <Modal show={budgetId != null} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
           <Stack direction="horizontal" gap="2">
             <div>
-              {content[lang]["titles"]["viewExpensesTitle"]} - {budgets?.name}
+              {content[lang]["addExpenseForm"]["budget"]} - {budget?.name}
             </div>
             {budgetId !== UNCATEGORIZED_BUDGET && (
               <Button
                 variant="outline-danger"
+                title={content[lang]["buttons"]["deleteBudget"]}
                 onClick={async () => {
-                  await deleteBudget(budget?._id);
-                  handleClose();
+                  await handleConfirmation();
                 }}
               >
                 {content[lang]["buttons"]["deleteButton"]}
@@ -48,6 +59,9 @@ export default function ViewExpensesModal({
       </Modal.Header>
       <Modal.Body>
         <Stack direction="vertical" gap="3">
+          <h5 className="text-decoration-underline text-black-50">
+            {content[lang]["titles"]["viewExpensesTitle"]}
+          </h5>
           {expenses?.map((expense) => (
             <Stack direction="horizontal" gap="2" key={expense._id}>
               <div className="me-auto fs-4">{expense?.description}</div>

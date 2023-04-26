@@ -2,7 +2,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { useRef } from "react";
 import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
-import { content } from "./Languages";
+import { content } from "../data/Languages";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function EditBudgetModal({ show, handleClose, budgetId }) {

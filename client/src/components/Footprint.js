@@ -2,7 +2,7 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import { useDynamicLang } from "../contexts/LanguageContext";
 import { useTheme } from "../contexts/ThemesContext";
-import { content } from "../components/Languages";
+import { content } from "../data/Languages";
 
 const Footprint = () => {
   const lang = useDynamicLang();
