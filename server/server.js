@@ -16,8 +16,9 @@ const corsOptions = {
   methods: ["GET", "PUT", "POST", "DELETE", "PATCH"],
 };
 
-app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
+
 //Routes
 const budgetRouter = require("./routes/budgets");
 const expenseRouter = require("./routes/expenses");
