@@ -1,6 +1,6 @@
 ## Description
 
-Front-end Personal Budget Manager built out of a YouTube that I turned into a MERN Full-stack app.
+Front-end Personal Budget Manager built out of a YouTube that I turned into a CRUD MERN Full-stack app.
 <br />
 <br />
 
@@ -128,8 +128,8 @@ npm start
 - Sign up
 - Sign in
 - Update account
-- Add/delete budgets
-- Add/delete expenses
+- Add/delete/edit budgets
+- Add/delete/edit expenses
 - Sign in with dummy account
 - Database for data persistance
 - Dark mode
