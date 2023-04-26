@@ -2,8 +2,8 @@ import { Button, Modal, Stack } from "react-bootstrap";
 import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
 import { currencyFormatter } from "../utils";
-import { EditIcon, XIcon } from "./Icons";
-import { content } from "./Languages";
+import { EditIcon, XIcon } from "./icons/Icons";
+import { content } from "../data/Languages";
 
 export default function ViewExpensesModal({
   budgetId,

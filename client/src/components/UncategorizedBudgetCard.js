@@ -2,7 +2,7 @@ import React from "react";
 import BudgetCard from "./BudgetCard";
 import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import { useDynamicLang } from "../contexts/LanguageContext";
-import { content } from "../components/Languages";
+import { content } from "../data/Languages";
 
 export default function UncategorizedBudgetCard({ ...props }) {
   const lang = useDynamicLang();

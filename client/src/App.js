@@ -1,17 +1,17 @@
-import Dashboard from "./components/Dashboard";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ThemesProvider } from "./contexts/ThemesContext";
 import AuthProvider from "./contexts/AuthContext";
 import { QueryClientProvider, QueryClient } from "react-query";
-import { Signup } from "./components/Signup";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Profile } from "./components/Profile";
-import { Login } from "./components/Login";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { ForgotPassword } from "./components/ForgotPassword";
-import { UpdateProfile } from "./components/UpdateProfile";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { BudgetsProvider } from "./contexts/BudgetsContext";
+import Dashboard from "./pages/Dashboard";
+import { UpdateProfile } from "./pages/UpdateProfile";
+import { Profile } from "./pages/Profile";
+import { Login } from "./pages/Login";
+import { Signup } from "./pages/Signup";
+import { ForgotPassword } from "./pages/ForgotPassword";
 
 function App() {
   const queryClient = new QueryClient();

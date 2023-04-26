@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Form, Card, Button, Alert, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import PopupSignInMethods from "./PopupSignInMethods";
+import PopupSignInMethods from "../components/PopupSignInMethods";
 
 export const Login = () => {
   const { REACT_APP_DUMMY_EMAIL, REACT_APP_DUMMY_PASSWORD } = process.env;

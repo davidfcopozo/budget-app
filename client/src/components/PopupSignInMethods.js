@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { GithubIcon, GoogleIcon } from "./Icons";
+import { GithubIcon, GoogleIcon } from "./icons/Icons";
 
 const PopupSignInMethods = () => {
   const [error, setError] = useState();

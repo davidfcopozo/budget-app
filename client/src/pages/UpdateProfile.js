@@ -3,7 +3,7 @@ import { Form, Card, Button, Alert, Image } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemesContext";
-import { ProfileIcon } from "./Icons";
+import { ProfileIcon } from "../components/icons/Icons";
 
 export const UpdateProfile = () => {
   const nameRef = useRef();

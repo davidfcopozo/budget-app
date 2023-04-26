@@ -1,9 +1,9 @@
 import { Button, Card, ProgressBar, Stack } from "react-bootstrap";
 import React from "react";
 import { currencyFormatter } from "../utils";
-import { content } from "./Languages";
+import { content } from "../data/Languages";
 import { useDynamicLang } from "../contexts/LanguageContext";
-import { EditIcon } from "./Icons";
+import { EditIcon } from "./icons/Icons";
 
 export default function BudgetCard({
   name,
