@@ -13,7 +13,7 @@ const corsOptions = {
   ],
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
-  methods: "*",
+  methods: ["GET", "PUT", "POST", "DELETE", "PATCH"],
 };
 
 app.use(cors(corsOptions));
