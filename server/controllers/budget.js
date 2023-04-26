@@ -40,10 +40,10 @@ const updateBudget = async (req, res) => {
   } = req;
 
   if (name === "" || maxExpending === "") {
-    throw new Error("Name and maximun expending are required");
+    throw new Error("Name and maximum expending are required");
   }
   if (maxExpending <= 0) {
-    throw new Error("Maximun expending must be greater than 0");
+    throw new Error("Maximum expending must be greater than 0");
   }
   const budget = await Budget.findOneAndUpdate(
     { _id: budgetId, createdBy: currentUser },
