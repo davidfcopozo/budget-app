@@ -46,7 +46,7 @@ function AuthProvider({ children }) {
         .then((snapshot) => {
           return getDownloadURL(snapshot.ref);
         })
-        .then((photoURL) => {
+        .then(async (photoURL) => {
           return createUserWithEmailAndPassword(auth, email, password).then(
             (userCredential) => {
               if (!file && name) {

@@ -24,7 +24,6 @@ export const Signup = () => {
 
   function handleFileInputChange(e) {
     const selectedFile = e.target.files[0];
-    console.log(selectedFile);
     setFile(selectedFile);
   }
   function handleImageRemoval() {
@@ -56,6 +55,7 @@ export const Signup = () => {
       } else if (error.code === "auth/weak-password") {
         setError("Password should be at least 6 characters");
       } else if (error.code) {
+        console.log(error.code);
         setError("Something went wrong, please try again");
       }
     }
