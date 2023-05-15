@@ -1,7 +1,5 @@
 import { useMutation } from "react-query";
 import axios from "axios";
-import { auth } from "../config/firebase.config";
-import { useEffect, useState } from "react";
 
 function usePostRequest(url, onSuccess, onError, onMutate, idToken) {
   const { mutate, data, status, error } = useMutation(

@@ -17,7 +17,7 @@ export const UpdateProfile = () => {
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
   const containerDark = useTheme();
-  const dummyUser = "fjxMskcdIxWnT5XRO6upKJOFOPS2";
+  const dummyUser = "uQWE2QGC2dTSXjfO1froBeQh6dE2";
 
   let avatar = {
     color: containerDark ? "white" : "#000",
