@@ -55,8 +55,9 @@ export const Signup = () => {
       } else if (error.code === "auth/weak-password") {
         setError("Password should be at least 6 characters");
       } else if (error.code) {
-        console.log(error.code);
-        setError("Something went wrong, please try again");
+        setError(
+          `Something went wrong, please try again. \n Error code: ${error.code}`
+        );
       }
     }
     setLoading(false);

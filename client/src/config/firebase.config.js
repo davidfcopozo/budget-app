@@ -16,7 +16,6 @@ const {
 
 // Your web app's Firebase configuration
 // Initialize Firebase
-console.log(REACT_APP_FIREBASE_STORAGE_BUCKET);
 export const firebaseConfig = {
   apiKey: REACT_APP_FIREBASE_API_KEY,
   authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN,
