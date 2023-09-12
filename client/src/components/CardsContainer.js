@@ -30,15 +30,32 @@ const CardsContainer = ({
     expensesIsFetching,
     expenses,
   } = useBudgets();
+  const [shouldShowLoader, setShouldShowLoader] = useState(true);
 
-  if (
-    budgetsIsLoading &&
-    budgetsIsFetching &&
-    expensesIsLoading &&
-    expensesIsFetching
-  ) {
+  useEffect(() => {
+    if (
+      budgets === undefined &&
+      expenses === undefined &&
+      budgetsIsLoading &&
+      budgetsIsFetching &&
+      expensesIsLoading &&
+      expensesIsFetching
+    ) {
+      setShouldShowLoader(false);
+    }
+  });
+
+  if (shouldShowLoader) {
     return <LoadingScreen />;
   }
+  if (!shouldShowLoader && budgets === undefined && expenses === undefined) {
+    return (
+      <h2 style={titleStyle} className="mx-auto py-auto h3">
+        {content[lang]["paragraphs"]["noBudgets"]}
+      </h2>
+    );
+  }
+
   return (
     <div
       style={{
@@ -48,28 +65,31 @@ const CardsContainer = ({
         alignItems: "flex-start",
       }}
     >
-      <div>
-        {budgets?.map((budget) => {
-          const amount = getBudgetExpenses(budget._id)?.reduce(
-            (total, expense) => total + expense.amount,
-            0
-          );
-          return (
-            <BudgetCard
-              key={budget._id}
-              name={budget.name}
-              amount={amount}
-              maxExpending={budget.maxExpending}
-              onAddExpenseClick={() => openAddExpenseModal(budget._id)}
-              onViewExpenseClick={() =>
-                setViewExpensesModalBudgetId(budget._id)
-              }
-              setShowEditBudgetModal={setShowEditBudgetModal}
-              onViewBudgetClick={() => setViewBudgetEditModal(budget._id)}
-            />
-          );
-        })}
-      </div>
+      {
+        <div>
+          {budgets?.map((budget) => {
+            const amount = getBudgetExpenses(budget._id)?.reduce(
+              (total, expense) => total + expense.amount,
+              0
+            );
+            return (
+              <BudgetCard
+                key={budget._id}
+                name={budget.name}
+                amount={amount}
+                maxExpending={budget.maxExpending}
+                onAddExpenseClick={() => openAddExpenseModal(budget._id)}
+                onViewExpenseClick={() =>
+                  setViewExpensesModalBudgetId(budget._id)
+                }
+                setShowEditBudgetModal={setShowEditBudgetModal}
+                onViewBudgetClick={() => setViewBudgetEditModal(budget._id)}
+              />
+            );
+          })}
+        </div>
+      }
+
       {!expenses || !budgets ? null : (
         <UncategorizedBudgetCard
           onAddExpenseClick={openAddExpenseModal}
