@@ -20,6 +20,9 @@ export const content = {
       viewExpensesTitle: "Expenses",
       uncategorized: "Uncategorized",
     },
+    paragraphs: {
+      noBudgets: "No budgets to show yet",
+    },
     addBudgetForm: {
       name: "Name",
       maximunSpending: "Maximun Spending",
@@ -60,6 +63,9 @@ export const content = {
       editExpense: "Editar Gasto",
       viewExpensesTitle: "Gastos",
       uncategorized: "Sin Categorizar",
+    },
+    paragraphs: {
+      noBudgets: "No hay presupuestos que mostrar todavía",
     },
     addBudgetForm: {
       name: "Nombre",
