@@ -6,18 +6,14 @@ const cors = require("cors");
 
 app.use(express.json());
 
-const corsOptions = {
-  origin: [
-    "https://budget-buddy-d0db6.web.app",
-    "https://testing.dais1gsda79no.amplifyapp.com",
-  ],
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
-  methods: ["GET", "PUT", "POST", "DELETE", "PATCH"],
-};
+let acceptedOrigins = [
+  "https://budget-buddy-d0db6.web.app",
+  "https://testing.dais1gsda79no.amplifyapp.com",
+  /* "http://localhost:3000/", */
+];
 
-app.options("*", cors(corsOptions));
-app.use(cors(corsOptions));
+app.options("*", cors(acceptedOrigins));
+app.use(cors(acceptedOrigins));
 
 //Routes
 const budgetRouter = require("./routes/budgets");
