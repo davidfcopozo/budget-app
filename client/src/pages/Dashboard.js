@@ -61,10 +61,10 @@ function Dashboard() {
 
   function handleShowCards() {
     if (
-      budgetsIsLoading === true ||
-      budgetsIsFetching === true ||
-      expensesIsLoading === true ||
-      expensesIsFetching === true
+      (!budgets && budgetsIsFetching) ||
+      budgetsIsLoading ||
+      (!expenses && expensesIsFetching) ||
+      expensesIsLoading
     ) {
       setShowCards(false);
     } else {
@@ -74,14 +74,7 @@ function Dashboard() {
 
   useLayoutEffect(() => {
     handleShowCards();
-  }, [
-    budgets,
-    expenses,
-    budgetsIsLoading,
-    budgetsIsFetching,
-    expensesIsLoading,
-    expensesIsFetching,
-  ]);
+  }, [budgets, expenses]);
 
   return (
     <>
@@ -127,6 +120,8 @@ function Dashboard() {
             setViewExpensesModalBudgetId={setViewExpensesModalBudgetId}
             setShowEditBudgetModal={setShowEditBudgetModal}
             setViewBudgetEditModal={setViewBudgetEditModal}
+            content={content}
+            lang={lang}
           />
         )}
 
