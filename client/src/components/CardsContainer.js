@@ -3,6 +3,8 @@ import UncategorizedBudgetCard from "./UncategorizedBudgetCard";
 import TotalBudgetCard from "./TotalBudgetCard";
 import { UNCATEGORIZED_BUDGET, useBudgets } from "../contexts/BudgetsContext";
 import LoadingScreen from "./LoadingScreen";
+import { useTheme } from "../contexts/ThemesContext";
+import { useEffect, useState } from "react";
 
 const CardsContainer = ({
   budgets,
@@ -10,7 +12,16 @@ const CardsContainer = ({
   setViewExpensesModalBudgetId,
   setShowEditBudgetModal,
   setViewBudgetEditModal,
+  content,
+  lang,
 }) => {
+  const containerDark = useTheme();
+
+  let titleStyle = {
+    color: containerDark ? "white" : "#000",
+    transition: "all 0.8s ease-in",
+  };
+
   const {
     getBudgetExpenses,
     budgetsIsLoading,
