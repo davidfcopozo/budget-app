@@ -34,6 +34,7 @@ function useFetchRequest(key, url) {
         return response.data;
       },
       enabled: !!currentUserId && !!idToken,
+      refetchOnWindowFocus: false,
     },
     {
       staleTime: 30000,
